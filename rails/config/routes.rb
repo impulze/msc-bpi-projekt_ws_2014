@@ -1,4 +1,4 @@
-ProjectP03::Application.routes.draw do
+DuffBrewery::Application.routes.draw do
   get "home/index"
 
   # The priority is based upon order of creation:
