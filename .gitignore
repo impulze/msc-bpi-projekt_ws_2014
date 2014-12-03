@@ -1,0 +1,4 @@
+/rails/config/database.yml
+/rails/.DS_Store
+/rails/log/*
+/rails/tmp/*
