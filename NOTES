@@ -1,3 +1,5 @@
 Um ein XML-Dokument gegen das TSD-Schema zu validieren, kann folgender
 Befehl genutzt werden:
  xmllint example_product.xml --schema doc/TSD_1.1_Schemas_HSRM/tsd/ProductData.xsd
+
+Test
