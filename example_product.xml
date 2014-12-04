@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:productData xsi:schemaLocation="urn:gs1:tsd:product_data:xsd:1 tsd/ProductData.xsd"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:pd="urn:gs1:tsd:product_data:xsd:1">
+
+  <gtin>28651951200001</gtin>
+
+  <!-- see http://en.wikipedia.org/wiki/ISO_3166-1_numeric -->
+  <targetMarket>278</targetMarket>
+
+  <informationProviderGLN>2865195120000</informationProviderGLN>
+
+  <informationProviderName>Duff Brewery</informationProviderName>
+
+  <!-- see http://www.w3schools.com/schema/schema_dtypes_date.asp (Duration DataType) -->
+  <timeToLive>P1D</timeToLive>
+
+  <productDataRecord>
+
+    <productionVariantDescription languageCode="DE">Normal</productionVariantDescription>
+
+    <productionVariantEffectiveDateTime>2014-01-01T00:00:00Z</productionVariantEffectiveDateTime>
+
+    <module>
+
+      <basicProductInformationModule>
+
+        <productName>Duff</productName>
+
+        <!-- TODO: optional, and how should it be used? Slogans? -->
+        <consumerMarketingDescription languageCode="EN">The One and Only!</consumerMarketingDescription>
+        <consumerMarketingDescription languageCode="DE">Das einzige Wahre!</consumerMarketingDescription>
+
+        <!-- TODO: optional, will IAP use them? -->
+        <productionInformationLink>
+
+          <url>http://example.com/duff</url>
+
+          <!-- TODO: no information about this -->
+          <productInformationTypeCode codeListVersion="foo">bar</productInformationTypeCode>
+
+          <languageCode>DE</languageCode>
+
+        </productionInformationLink>
+
+        <!-- TODO: optional, will IAP use them? -->
+        <imageLink>
+
+          <url>http://example.com/duff.jpg</url>
+
+          <!-- TODO: no information about this -->
+          <imageTypeCode codeListVersion="foo">bar</imageTypeCode>
+
+          <languageCode>DE</languageCode>
+
+          <imagePixelWidth>200</imagePixelWidth>
+
+          <imagePixelHeight>100</imagePixelHeight>
+
+          <!-- see http://www.gs1.org/docs/gsmp/eancom/2012/ean02s4/part3/dc313.htm -->
+          <fileSize measurementUnitCode="4L">1</fileSize>
+
+        </imageLink>
+
+      </basicProductInformationModule>
+
+      <!-- == TODO: a 2nd module is required == -->
+
+    </module>
+
+    <!-- == TODO: this is optional, shall we use it? -->
+    <productComponentRecord>
+
+      <componentNumber>1</componentNumber>
+
+      <!-- TODO: optional -->
+      <componentDescription languageCode="DE">Malz</componentDescription>
+
+      <!-- TODO: optional modules can follow, to describe the component -->
+
+    </productComponentRecord>
+
+  </productDataRecord>
+
+  <!--
+       The following attribute/value pair lists can be used almost
+       anywhere, what's the use?
+    <avpList>
+      <stringAVP name="foo">bar</stringAVP>
+    </avpList>
+  -->
+
+</pd:productData>
