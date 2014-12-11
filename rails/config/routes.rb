@@ -60,4 +60,5 @@ DuffBrewery::Application.routes.draw do
   # match ':controller(/:action(/:id))(.:format)'
 
   get '/having', to: 'home#having'
+  get '/items', to: 'home#items'
 end

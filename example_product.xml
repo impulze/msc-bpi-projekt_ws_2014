@@ -17,7 +17,8 @@
 
   <productDataRecord>
 
-    <productionVariantDescription languageCode="DE">Normal</productionVariantDescription>
+    <productionVariantDescription languageCode="EN">Classic</productionVariantDescription>
+    <productionVariantDescription languageCode="DE">Klassisch</productionVariantDescription>
 
     <productionVariantEffectiveDateTime>2014-01-01T00:00:00Z</productionVariantEffectiveDateTime>
 
@@ -25,11 +26,12 @@
 
       <basicProductInformationModule>
 
-        <productName>Duff</productName>
+        <!-- see http://dict.leo.org/forum/viewUnsolvedquery.php?idThread=165130&idForum=1&lang=de&lp=ende -->
+        <productName languageCode="EN">Duff Classic - The Alt Beer</productName>
+        <productName languageCode="DE">Duff Klassisch - Das Alt</productName>
 
-        <!-- TODO: optional, and how should it be used? Slogans? -->
-        <consumerMarketingDescription languageCode="EN">The One and Only!</consumerMarketingDescription>
-        <consumerMarketingDescription languageCode="DE">Das einzige Wahre!</consumerMarketingDescription>
+        <consumerMarketingDescription languageCode="EN">Not really old, just a little older than others.</consumerMarketingDescription>
+        <consumerMarketingDescription languageCode="DE">Nicht so alt, nur älter als andere.</consumerMarketingDescription>
 
         <!-- TODO: optional, will IAP use them? -->
         <productionInformationLink>
