@@ -1,0 +1,435 @@
+<productData>
+	<gtin>09506000036809</gtin>
+	<targetMarket>840</targetMarket>
+	<informationProviderGLN>3027800020301</informationProviderGLN>
+	<informationProviderName>Equadis</informationProviderName>
+	<timeToLive>P1Y2M3DT10H30M</timeToLive>
+	<productDataRecord>
+		<productionVariantDescription languageCode="us" codeListVersion="1.0">1887063469</productionVariantDescription>
+		<productionVariantEffectiveDateTime>2013-10-04T15:58:30.9800000Z</productionVariantEffectiveDateTime>
+		<module>
+			<basic_product_information_module:basicProductInformationModule xmlns:basic_product_information_module="urn:gs1:tsd:basic_product_information_module:xsd:1">
+				<productName languageCode="us" codeListVersion="1.0">1513629829</productName>
+				<consumerMarketingDescription languageCode="us" codeListVersion="1.0">1822730333</consumerMarketingDescription>
+				<gpcCategoryCode>10005372</gpcCategoryCode>
+				<regulatedProductName languageCode="us" codeListVersion="1.0">866074159</regulatedProductName>
+				<brandNameInformation>
+					<brandName>brand 1</brandName>
+					<languageSpecificBrandName languageCode="us" codeListVersion="1.0">341681552</languageSpecificBrandName>
+				</brandNameInformation>
+				<productInformationLink>
+					<url>http://www.url.com</url>
+					<productInformationTypeCode codeListVersion="1.0">VIDEO</productInformationTypeCode>
+					<languageCode codeListVersion="1.0">us</languageCode>
+					<avpList>
+						<stringAVP name="170224465">1822777007</stringAVP>
+					</avpList>
+				</productInformationLink>
+				<imageLink>
+					<url>http://www.url.com</url>
+					<imageTypeCode codeListVersion="1.0">LOGO</imageTypeCode>
+					<languageCode codeListVersion="1.0">us</languageCode>
+					<imagePixelHeight>1</imagePixelHeight>
+					<imagePixelWidth>1</imagePixelWidth>
+					<fileSize measurementUnitCode="GRM" codeListVersion="1.0">1717555581.00</fileSize>
+					<avpList>
+						<stringAVP name="1737281966">1563374670</stringAVP>
+					</avpList>
+				</imageLink>
+				<packagingSignatureLine>
+					<partyContactRoleCode codeListVersion="1.0">BRAND_OWNER</partyContactRoleCode>
+					<partyContactName>party 1</partyContactName>
+					<partyContactAddress>party 1 address</partyContactAddress>
+					<gln>1234567890128</gln>
+					<communicationChannel>
+						<communicationChannelCode codeListVersion="1.0">EMAIL</communicationChannelCode>
+						<communicationValue>com channel 1 value</communicationValue>
+						<communicationChannelName>com channel 1</communicationChannelName>
+					</communicationChannel>
+					<avpList>
+						<stringAVP name="1692715258">1706026442</stringAVP>
+					</avpList>
+				</packagingSignatureLine>
+				<avpList>
+					<stringAVP name="1052407220">1885794624</stringAVP>
+				</avpList>
+			</basic_product_information_module:basicProductInformationModule>
+		</module>
+		<module>
+			<nutritional_product_information_module:nutritionalProductInformationModule xmlns:nutritional_product_information_module="urn:gs1:tsd:nutritional_product_information_module:xsd:1">
+				<nutrientHeader>
+					<preparationStateCode codeListVersion="1.0">PREPARED</preparationStateCode>
+					<dailyValueIntakeReference languageCode="us" codeListVersion="1.0">1814417682</dailyValueIntakeReference>
+					<servingSizeDescription languageCode="us" codeListVersion="1.0">1232055767</servingSizeDescription>
+					<servingSize measurementUnitCode="GRM" codeListVersion="1.0">1145731051.00</servingSize>
+					<numberOfServings>15.00</numberOfServings>
+					<nutrientDetail>
+						<nutrientTypeCode codeListVersion="1.0">GLY</nutrientTypeCode>
+						<dailyValueIntakePercent>10</dailyValueIntakePercent>
+						<measurementPrecision codeListVersion="1.0">APPROXIMATELY</measurementPrecision>
+						<quantityContained measurementUnitCode="GRM" codeListVersion="1.0">248507735.00</quantityContained>
+						<avpList>
+							<stringAVP name="890411195">482389210</stringAVP>
+						</avpList>
+					</nutrientDetail>
+					<avpList>
+						<stringAVP name="1861122291">843176670</stringAVP>
+					</avpList>
+				</nutrientHeader>
+				<avpList>
+					<stringAVP name="1315940024">1341357253</stringAVP>
+				</avpList>
+			</nutritional_product_information_module:nutritionalProductInformationModule>
+		</module>
+		<module>
+			<product_allergen_information_module:productAllergenInformationModule xmlns:product_allergen_information_module="urn:gs1:tsd:product_allergen_information_module:xsd:1">
+				<allergenRelatedInformation>
+					<allergenStatement languageCode="us" formattingPattern="Imaginary Formatting Pattern.">1748653568</allergenStatement>
+					<allergenSpecificationAgency>allergen specification agency</allergenSpecificationAgency>
+					<allergenSpecificationName>allergen specification name</allergenSpecificationName>
+					<allergen>
+						<avpList>
+							<stringAVP name="1439656648">188758119</stringAVP>
+						</avpList>
+					</allergen>
+					<avpList>
+						<stringAVP name="1985482618">1799242998</stringAVP>
+					</avpList>
+				</allergenRelatedInformation>
+				<avpList>
+					<stringAVP name="721898085">186326130</stringAVP>
+				</avpList>
+			</product_allergen_information_module:productAllergenInformationModule>
+		</module>
+		<module>
+			<product_claims_and_endorsements_module:productClaimsAndEndorsementsModule xmlns:product_claims_and_endorsements_module="urn:gs1:tsd:product_claims_and_endorsements_module:xsd:1">
+				<regulatoryComplianceCode codeListVersion="1.0">E_MARK</regulatoryComplianceCode>
+				<warningStatement languageCode="us" codeListVersion="1.0">1087245111</warningStatement>
+				<nutritionalClaimCode codeListVersion="1.0">FAT_FREE</nutritionalClaimCode>
+				<nutritionalClaimStatement languageCode="us" codeListVersion="1.0">432557034</nutritionalClaimStatement>
+				<healthClaimDescription languageCode="us" codeListVersion="1.0">92528241</healthClaimDescription>
+				<dietaryClaimCode codeListVersion="1.0">BIOLOGICAL</dietaryClaimCode>
+				<accreditationInformation>
+					<accreditationCode codeListVersion="1.0">AMA_ORGANIC_SEAL</accreditationCode>
+					<accreditationText languageCode="us" codeListVersion="1.0">30034357</accreditationText>
+					<avpList>
+						<stringAVP name="1698663572">535402356</stringAVP>
+					</avpList>
+				</accreditationInformation>
+				<avpList>
+					<stringAVP name="124072238">1410229064</stringAVP>
+				</avpList>
+			</product_claims_and_endorsements_module:productClaimsAndEndorsementsModule>
+		</module>
+		<module>
+			<product_instructions_module:productInstructionsModule xmlns:product_instructions_module="urn:gs1:tsd:product_instructions_module:xsd:1">
+				<consumerUsageInstructions languageCode="us" codeListVersion="1.0">184761173</consumerUsageInstructions>
+				<consumerStorageInstructions languageCode="us" codeListVersion="1.0">207616586</consumerStorageInstructions>
+				<avpList>
+					<stringAVP name="886704621">1112215587</stringAVP>
+				</avpList>
+			</product_instructions_module:productInstructionsModule>
+		</module>
+		<module>
+			<product_quantity_information_module:productQuantityInformationModule xmlns:product_quantity_information_module="urn:gs1:tsd:product_quantity_information_module:xsd:1">
+				<netContent measurementUnitCode="GRM" codeListVersion="1.0">1099601692.00</netContent>
+				<drainedWeight measurementUnitCode="GRM" codeListVersion="1.0">1114578877.00</drainedWeight>
+				<percentageOfAlcoholByVolume>40.00</percentageOfAlcoholByVolume>
+				<servingQuantityInformation>
+					<numberOfServingsPerPackage>3.00</numberOfServingsPerPackage>
+					<measurementPrecisionCode codeListVersion="1.0">APPROXIMATELY</measurementPrecisionCode>
+					<numberOfServingsRangeDescription languageCode="us" codeListVersion="1.0">698244462</numberOfServingsRangeDescription>
+					<avpList>
+						<stringAVP name="1674608078">1947596689</stringAVP>
+					</avpList>
+				</servingQuantityInformation>
+				<avpList>
+					<stringAVP name="1296310655">1800012421</stringAVP>
+				</avpList>
+			</product_quantity_information_module:productQuantityInformationModule>
+		</module>
+		<module>
+			<product_origin_information_module:productOriginInformationModule xmlns:product_origin_information_module="urn:gs1:tsd:product_origin_information_module:xsd:1">
+				<productOriginStatement languageCode="us" codeListVersion="1.0">1009738050</productOriginStatement>
+				<productProvenanceStatement languageCode="us" codeListVersion="1.0">984279994</productProvenanceStatement>
+				<countryOfOrigin>
+					<countryCode codeListVersion="1.0">620</countryCode>
+					<countrySubdivisionCode codeListVersion="1.0">840</countrySubdivisionCode>
+				</countryOfOrigin>
+				<productActivityDetails>
+					<productActivityTypeCode codeListVersion="1.0">COUNTRY_OF_ASSEMBLY</productActivityTypeCode>
+					<activityRegionDescription languageCode="us" codeListVersion="1.0">99519900</activityRegionDescription>
+					<countryOfActivity>
+						<countryCode codeListVersion="1.0">620</countryCode>
+						<countrySubdivisionCode codeListVersion="1.0">840</countrySubdivisionCode>
+					</countryOfActivity>
+					<avpList>
+						<stringAVP name="2144512126">164031411</stringAVP>
+					</avpList>
+				</productActivityDetails>
+				<avpList>
+					<stringAVP name="503112522">197689805</stringAVP>
+				</avpList>
+			</product_origin_information_module:productOriginInformationModule>
+		</module>
+		<module>
+			<food_and_beverage_ingredient_information_module:foodAndBeverageIngredientInformationModule xmlns:food_and_beverage_ingredient_information_module="urn:gs1:tsd:food_and_beverage_information_module:xsd:1">
+				<ingredientStatement languageCode="us" formattingPattern="Imaginary Formatting Pattern.">481373080</ingredientStatement>
+				<additivesStatement languageCode="us" formattingPattern="Imaginary Formatting Pattern.">1264904238</additivesStatement>
+				<foodAndBeverageIngredient>
+					<ingredientName languageCode="us" codeListVersion="1.0">1049508551</ingredientName>
+					<ingredientSequence>30</ingredientSequence>
+					<ingredientContentPercentage>10.00</ingredientContentPercentage>
+					<ingredientCountryOfOriginCode codeListVersion="1.0">620</ingredientCountryOfOriginCode>
+					<ingredientCatchZone>catch zone 1</ingredientCatchZone>
+					<isIngredientHighlighted>true</isIngredientHighlighted>
+					<subingredient>
+						<ingredientName languageCode="us" codeListVersion="1.0">2128949993</ingredientName>
+						<ingredientSequence>30</ingredientSequence>
+						<ingredientContentPercentage>10.00</ingredientContentPercentage>
+						<ingredientCountryOfOriginCode codeListVersion="1.0">620</ingredientCountryOfOriginCode>
+						<ingredientCatchZone>catch zone 2</ingredientCatchZone>
+						<isIngredientHighlighted>true</isIngredientHighlighted>
+						<avpList>
+							<stringAVP name="1984778036">2065796230</stringAVP>
+						</avpList>
+					</subingredient>
+					<avpList>
+						<stringAVP name="1015383881">1377048540</stringAVP>
+					</avpList>
+				</foodAndBeverageIngredient>
+				<avpList>
+					<stringAVP name="605470147">1273469408</stringAVP>
+				</avpList>
+			</food_and_beverage_ingredient_information_module:foodAndBeverageIngredientInformationModule>
+		</module>
+		<module>
+			<food_and_beverage_preparation_information_module:foodAndBeveragePreparationInformationModule xmlns:food_and_beverage_preparation_information_module="urn:gs1:tsd:food_and_beverage_preparation_information_module:xsd:1">
+				<servingSuggestion languageCode="us" codeListVersion="1.0">959878979</servingSuggestion>
+				<preparationMethod>
+					<preparationTypeCode codeListVersion="1.0">PREPARED</preparationTypeCode>
+					<preparationInstructions languageCode="us" formattingPattern="Imaginary Formatting Pattern.">1855760267</preparationInstructions>
+					<avpList>
+						<stringAVP name="115754110">696653411</stringAVP>
+					</avpList>
+				</preparationMethod>
+				<avpList>
+					<stringAVP name="1021658813">985762318</stringAVP>
+				</avpList>
+			</food_and_beverage_preparation_information_module:foodAndBeveragePreparationInformationModule>
+		</module>
+		<productComponentRecord>
+			<componentNumber>20</componentNumber>
+			<componentDescription languageCode="us" codeListVersion="1.0">1714177734</componentDescription>
+			<module>
+				<basic_product_information_module:basicProductInformationModule xmlns:basic_product_information_module="urn:gs1:tsd:basic_product_information_module:xsd:1">
+					<productName languageCode="us" codeListVersion="1.0">359446967</productName>
+					<consumerMarketingDescription languageCode="us" codeListVersion="1.0">563192381</consumerMarketingDescription>
+					<gpcCategoryCode>10005372</gpcCategoryCode>
+					<regulatedProductName languageCode="us" codeListVersion="1.0">1021695764</regulatedProductName>
+					<brandNameInformation>
+						<brandName>brand 2</brandName>
+						<languageSpecificBrandName languageCode="us" codeListVersion="1.0">1350497597</languageSpecificBrandName>
+					</brandNameInformation>
+					<productInformationLink>
+						<url>http://www.url.com/2</url>
+						<productInformationTypeCode codeListVersion="1.0">VIDEO</productInformationTypeCode>
+						<languageCode codeListVersion="1.0">us</languageCode>
+						<avpList>
+							<stringAVP name="134734658">727304775</stringAVP>
+						</avpList>
+					</productInformationLink>
+					<imageLink>
+						<url>http://www.url.com/2</url>
+						<imageTypeCode codeListVersion="1.0">LOGO</imageTypeCode>
+						<languageCode codeListVersion="1.0">us</languageCode>
+						<imagePixelHeight>2</imagePixelHeight>
+						<imagePixelWidth>2</imagePixelWidth>
+						<fileSize measurementUnitCode="GRM" codeListVersion="1.0">1602137167.00</fileSize>
+						<avpList>
+							<stringAVP name="653058545">1694988479</stringAVP>
+						</avpList>
+					</imageLink>
+					<packagingSignatureLine>
+						<partyContactRoleCode codeListVersion="1.0">BRAND_OWNER</partyContactRoleCode>
+						<partyContactName>party 2</partyContactName>
+						<partyContactAddress>party 2 address</partyContactAddress>
+						<gln>1234567890128</gln>
+						<communicationChannel>
+							<communicationChannelCode codeListVersion="1.0">EMAIL</communicationChannelCode>
+							<communicationValue>com channel 2 value</communicationValue>
+							<communicationChannelName>com channel 2</communicationChannelName>
+						</communicationChannel>
+						<avpList>
+							<stringAVP name="179805703">2143862902</stringAVP>
+						</avpList>
+					</packagingSignatureLine>
+					<avpList>
+						<stringAVP name="1085722433">87844281</stringAVP>
+					</avpList>
+				</basic_product_information_module:basicProductInformationModule>
+			</module>
+			<module>
+				<nutritional_product_information_module:nutritionalProductInformationModule xmlns:nutritional_product_information_module="urn:gs1:tsd:nutritional_product_information_module:xsd:1">
+					<nutrientHeader>
+						<preparationStateCode codeListVersion="1.0">PREPARED</preparationStateCode>
+						<dailyValueIntakeReference languageCode="us" codeListVersion="1.0">844716845</dailyValueIntakeReference>
+						<servingSizeDescription languageCode="us" codeListVersion="1.0">48085254</servingSizeDescription>
+						<servingSize measurementUnitCode="GRM" codeListVersion="1.0">743996121.00</servingSize>
+						<numberOfServings>20.00</numberOfServings>
+						<nutrientDetail>
+							<nutrientTypeCode codeListVersion="1.0">GLY</nutrientTypeCode>
+							<dailyValueIntakePercent>30</dailyValueIntakePercent>
+							<measurementPrecision codeListVersion="1.0">APPROXIMATELY</measurementPrecision>
+							<quantityContained measurementUnitCode="GRM" codeListVersion="1.0">1197578921.00</quantityContained>
+							<avpList>
+								<stringAVP name="1676414427">724031337</stringAVP>
+							</avpList>
+						</nutrientDetail>
+						<avpList>
+							<stringAVP name="213386204">2044890250</stringAVP>
+						</avpList>
+					</nutrientHeader>
+					<avpList>
+						<stringAVP name="476537021">106415826</stringAVP>
+					</avpList>
+				</nutritional_product_information_module:nutritionalProductInformationModule>
+			</module>
+			<module>
+				<product_allergen_information_module:productAllergenInformationModule xmlns:product_allergen_information_module="urn:gs1:tsd:product_allergen_information_module:xsd:1">
+					<allergenRelatedInformation>
+						<allergenStatement languageCode="us" formattingPattern="Imaginary Formatting Pattern.">319681858</allergenStatement>
+						<allergenSpecificationAgency>allergen specification agency</allergenSpecificationAgency>
+						<allergenSpecificationName>allergen specification name</allergenSpecificationName>
+						<allergen>
+							<avpList>
+								<stringAVP name="835004882">1622407817</stringAVP>
+							</avpList>
+						</allergen>
+						<avpList>
+							<stringAVP name="470517518">1022605516</stringAVP>
+						</avpList>
+					</allergenRelatedInformation>
+					<avpList>
+						<stringAVP name="1114634526">731743789</stringAVP>
+					</avpList>
+				</product_allergen_information_module:productAllergenInformationModule>
+			</module>
+			<module>
+				<product_claims_and_endorsements_module:productClaimsAndEndorsementsModule xmlns:product_claims_and_endorsements_module="urn:gs1:tsd:product_claims_and_endorsements_module:xsd:1">
+					<regulatoryComplianceCode codeListVersion="1.0">E_MARK</regulatoryComplianceCode>
+					<warningStatement languageCode="us" codeListVersion="1.0">1442704809</warningStatement>
+					<nutritionalClaimCode codeListVersion="1.0">FAT_FREE</nutritionalClaimCode>
+					<nutritionalClaimStatement languageCode="us" codeListVersion="1.0">2135877448</nutritionalClaimStatement>
+					<healthClaimDescription languageCode="us" codeListVersion="1.0">2000418351</healthClaimDescription>
+					<dietaryClaimCode codeListVersion="1.0">BIOLOGICAL</dietaryClaimCode>
+					<accreditationInformation>
+						<accreditationCode codeListVersion="1.0">AMA_ORGANIC_SEAL</accreditationCode>
+						<accreditationText languageCode="us" codeListVersion="1.0">1245396833</accreditationText>
+						<avpList>
+							<stringAVP name="365299156">170415199</stringAVP>
+						</avpList>
+					</accreditationInformation>
+					<avpList>
+						<stringAVP name="1545190576">1831432739</stringAVP>
+					</avpList>
+				</product_claims_and_endorsements_module:productClaimsAndEndorsementsModule>
+			</module>
+			<module>
+				<product_instructions_module:productInstructionsModule xmlns:product_instructions_module="urn:gs1:tsd:product_instructions_module:xsd:1">
+					<consumerUsageInstructions languageCode="us" codeListVersion="1.0">2001167741</consumerUsageInstructions>
+					<consumerStorageInstructions languageCode="us" codeListVersion="1.0">2005440825</consumerStorageInstructions>
+					<avpList>
+						<stringAVP name="2019188299">1874665785</stringAVP>
+					</avpList>
+				</product_instructions_module:productInstructionsModule>
+			</module>
+			<module>
+				<product_quantity_information_module:productQuantityInformationModule xmlns:product_quantity_information_module="urn:gs1:tsd:product_quantity_information_module:xsd:1">
+					<netContent measurementUnitCode="GRM" codeListVersion="1.0">801243661.00</netContent>
+					<drainedWeight measurementUnitCode="GRM" codeListVersion="1.0">536343892.00</drainedWeight>
+					<percentageOfAlcoholByVolume>40.00</percentageOfAlcoholByVolume>
+					<servingQuantityInformation>
+						<numberOfServingsPerPackage>3.00</numberOfServingsPerPackage>
+						<measurementPrecisionCode codeListVersion="1.0">APPROXIMATELY</measurementPrecisionCode>
+						<numberOfServingsRangeDescription languageCode="us" codeListVersion="1.0">729883539</numberOfServingsRangeDescription>
+						<avpList>
+							<stringAVP name="1419113859">2077176206</stringAVP>
+						</avpList>
+					</servingQuantityInformation>
+					<avpList>
+						<stringAVP name="911974723">2117681943</stringAVP>
+					</avpList>
+				</product_quantity_information_module:productQuantityInformationModule>
+			</module>
+			<module>
+				<product_origin_information_module:productOriginInformationModule xmlns:product_origin_information_module="urn:gs1:tsd:product_origin_information_module:xsd:1">
+					<productOriginStatement languageCode="us" codeListVersion="1.0">1376323549</productOriginStatement>
+					<productProvenanceStatement languageCode="us" codeListVersion="1.0">1064809754</productProvenanceStatement>
+					<countryOfOrigin>
+						<countryCode codeListVersion="1.0">620</countryCode>
+						<countrySubdivisionCode codeListVersion="1.0">840</countrySubdivisionCode>
+					</countryOfOrigin>
+					<productActivityDetails>
+						<productActivityTypeCode codeListVersion="1.0">COUNTRY_OF_ASSEMBLY</productActivityTypeCode>
+						<activityRegionDescription languageCode="us" codeListVersion="1.0">210649042</activityRegionDescription>
+						<countryOfActivity>
+							<countryCode codeListVersion="1.0">620</countryCode>
+							<countrySubdivisionCode codeListVersion="1.0">840</countrySubdivisionCode>
+						</countryOfActivity>
+						<avpList>
+							<stringAVP name="990146397">1751910616</stringAVP>
+						</avpList>
+					</productActivityDetails>
+					<avpList>
+						<stringAVP name="354985638">2030393593</stringAVP>
+					</avpList>
+				</product_origin_information_module:productOriginInformationModule>
+			</module>
+			<module>
+				<food_and_beverage_ingredient_information_module:foodAndBeverageIngredientInformationModule xmlns:food_and_beverage_ingredient_information_module="urn:gs1:tsd:food_and_beverage_information_module:xsd:1">
+					<ingredientStatement languageCode="us" formattingPattern="Imaginary Formatting Pattern.">456776555</ingredientStatement>
+					<additivesStatement languageCode="us" formattingPattern="Imaginary Formatting Pattern.">702013906</additivesStatement>
+					<foodAndBeverageIngredient>
+						<ingredientName languageCode="us" codeListVersion="1.0">515492715</ingredientName>
+						<ingredientSequence>30</ingredientSequence>
+						<ingredientContentPercentage>10.00</ingredientContentPercentage>
+						<ingredientCountryOfOriginCode codeListVersion="1.0">620</ingredientCountryOfOriginCode>
+						<ingredientCatchZone>catch zone 2</ingredientCatchZone>
+						<isIngredientHighlighted>true</isIngredientHighlighted>
+						<avpList>
+							<stringAVP name="659810488">256787257</stringAVP>
+						</avpList>
+					</foodAndBeverageIngredient>
+					<avpList>
+						<stringAVP name="579531651">1685907666</stringAVP>
+					</avpList>
+				</food_and_beverage_ingredient_information_module:foodAndBeverageIngredientInformationModule>
+			</module>
+			<module>
+				<food_and_beverage_preparation_information_module:foodAndBeveragePreparationInformationModule xmlns:food_and_beverage_preparation_information_module="urn:gs1:tsd:food_and_beverage_preparation_information_module:xsd:1">
+					<servingSuggestion languageCode="us" codeListVersion="1.0">963244690</servingSuggestion>
+					<preparationMethod>
+						<preparationTypeCode codeListVersion="1.0">PREPARED</preparationTypeCode>
+						<preparationInstructions languageCode="us" formattingPattern="Imaginary Formatting Pattern.">884584541</preparationInstructions>
+						<avpList>
+							<stringAVP name="7985454">1232787729</stringAVP>
+						</avpList>
+					</preparationMethod>
+					<avpList>
+						<stringAVP name="989931095">479417689</stringAVP>
+					</avpList>
+				</food_and_beverage_preparation_information_module:foodAndBeveragePreparationInformationModule>
+			</module>
+			<avpList>
+				<stringAVP name="1965296820">252392241</stringAVP>
+			</avpList>
+		</productComponentRecord>
+		<avpList>
+			<stringAVP name="2025153702">1346289192</stringAVP>
+		</avpList>
+	</productDataRecord>
+	<avpList>
+		<stringAVP name="705650022">274772624</stringAVP>
+	</avpList>
+</productData>
