@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:productData xsi:schemaLocation="urn:gs1:tsd:product_data:xsd:1 tsd/ProductData.xsd"
+<pd:productData xmlns:pd="urn:gs1:tsd:product_data:xsd:1"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:pd="urn:gs1:tsd:product_data:xsd:1">
+                xsi:schemaLocation="urn:gs1:tsd:product_data:xsd:1 tsd/ProductData.xsd">
 
   <gtin>28651951200001</gtin>
 
@@ -17,79 +17,145 @@
 
   <productDataRecord>
 
-    <productionVariantDescription languageCode="EN">Classic</productionVariantDescription>
-    <productionVariantDescription languageCode="DE">Klassisch</productionVariantDescription>
+    <productionVariantDescription languageCode="DE">Duff Klassisch</productionVariantDescription>
 
     <productionVariantEffectiveDateTime>2014-01-01T00:00:00Z</productionVariantEffectiveDateTime>
 
     <module>
+      <bpim:basicProductInformationModule xmlns:bpim="urn:gs1:tsd:basic_product_information_module:xsd:1"
+                                          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                          xsi:schemaLocation="urn:gs1:tsd:basic_product_information_module:xsd:1 tsd/BasicProductInformationModule.xsd">
 
-      <basicProductInformationModule>
+        <productName languageCode="DE">Altbier</productName>
+        <productName languageCode="EN">Alt Beer</productName>
 
-        <!-- see http://dict.leo.org/forum/viewUnsolvedquery.php?idThread=165130&idForum=1&lang=de&lp=ende -->
-        <productName languageCode="EN">Duff Classic - The Alt Beer</productName>
-        <productName languageCode="DE">Duff Klassisch - Das Alt</productName>
-
-        <consumerMarketingDescription languageCode="EN">Not really old, just a little older than others.</consumerMarketingDescription>
         <consumerMarketingDescription languageCode="DE">Nicht so alt, nur älter als andere.</consumerMarketingDescription>
 
-        <!-- TODO: optional, will IAP use them? -->
-        <productionInformationLink>
+	<!-- see http://www.gs1.org/1/productssolutions/gdsn/gpc/browser/index.html -->
+	<gpcCategoryCode>10000159</gpcCategoryCode>
+
+	<!-- regulated description according to Los-Kennzeichnungs-Verordnung (Artikel 3) -->
+	<regulatedProductName languageCode="DE">Dunkles obergäriges Bier</regulatedProductName>
+	<regulatedProductName languageCode="EN">Dark top-fermented beer</regulatedProductName>
+
+	<brandNameInformation>
+		<brandName>Duff</brandName>
+	</brandNameInformation>
+
+        <productInformationLink>
 
           <url>http://example.com/duff</url>
 
-          <!-- TODO: no information about this -->
-          <productInformationTypeCode codeListVersion="foo">bar</productInformationTypeCode>
+          <!-- http://apps.gs1.org/GDD/Pages/clDetails.aspx?semanticURN=urn:gs1:gdd:cl:TSD_ProductInformationTypeCode&release=1 -->
+          <productInformationTypeCode codeListVersion="1">WEBSITE</productInformationTypeCode>
 
+          <!-- language used on the website -->
           <languageCode>DE</languageCode>
 
-        </productionInformationLink>
+        </productInformationLink>
 
-        <!-- TODO: optional, will IAP use them? -->
         <imageLink>
 
           <url>http://example.com/duff.jpg</url>
 
-          <!-- TODO: no information about this -->
-          <imageTypeCode codeListVersion="foo">bar</imageTypeCode>
-
-          <languageCode>DE</languageCode>
-
-          <imagePixelWidth>200</imagePixelWidth>
+          <!-- see http://apps.gs1.org/GDD/Pages/clDetails.aspx?semanticURN=urn:gs1:gdd:cl:TSD_ImageTypeCode&release=1 -->
+          <imageTypeCode codeListVersion="1">PRODUCT_LABEL_IMAGE</imageTypeCode>
 
           <imagePixelHeight>100</imagePixelHeight>
+
+          <imagePixelWidth>200</imagePixelWidth>
 
           <!-- see http://www.gs1.org/docs/gsmp/eancom/2012/ean02s4/part3/dc313.htm -->
           <fileSize measurementUnitCode="4L">1</fileSize>
 
         </imageLink>
 
-      </basicProductInformationModule>
-
-      <!-- == TODO: a 2nd module is required == -->
-
+        <packagingSignatureLine>
+          <!-- see http://apps.gs1.org/GDD/Pages/clDetails.aspx?semanticURN=urn:gs1:gdd:cl:TSD_PartyContactRoleCode&release=1 -->
+          <partyContactRoleCode>BRAND_OWNER</partyContactRoleCode>
+          <partyContactName>Duff Brewery</partyContactName>
+          <partyContactAddress>Elbchaussee 111, 20095 Hamburg</partyContactAddress>
+          <gln>2865195120000</gln>
+          <communicationChannel>
+            <communicationChannelCode>WEBSITE</communicationChannelCode>
+            <communicationValue>http://example.com</communicationValue>
+          </communicationChannel>
+          <communicationChannel>
+            <communicationChannelCode>TELEPHONE</communicationChannelCode>
+            <communicationValue>+494011112222333</communicationValue>
+            <communicationChannelName>Hotline</communicationChannelName>
+          </communicationChannel>
+          <communicationChannel>
+            <communicationChannelCode>EMAIL</communicationChannelCode>
+            <communicationValue>duff@example.com</communicationValue>
+          </communicationChannel>
+        </packagingSignatureLine>
+      </bpim:basicProductInformationModule>
     </module>
 
-    <!-- == TODO: this is optional, shall we use it? -->
-    <productComponentRecord>
+    <module>
+      <fabiim:foodAndBeverageIngredientInformationModule xmlns:fabiim="urn:gs1:tsd:food_and_beverage_information_module:xsd:1"
+                                                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                                         xsi:schemaLocation="urn:gs1:tsd:food_and_beverage_information_module:xsd:1 tsd/FoodAndBeverageIngredientInformationModule.xsd">
 
-      <componentNumber>1</componentNumber>
+        <ingredientStatement languageCode="DE">Verschiedene Malze mit Hopfen gekocht und mit verschiedenen Hefekulturen zugesetzt.</ingredientStatement>
 
-      <!-- TODO: optional -->
-      <componentDescription languageCode="DE">Malz</componentDescription>
+        <foodAndBeverageIngredient>
+          <ingredientName languageCode="DE">Münchener Malz</ingredientName>
+          <ingredientSequence>1</ingredientSequence>
+          <ingredientCountryOfOriginCode>DE</ingredientCountryOfOriginCode>
+        </foodAndBeverageIngredient>
 
-      <!-- TODO: optional modules can follow, to describe the component -->
+        <foodAndBeverageIngredient>
+          <ingredientName languageCode="DE">Pilsener Malz</ingredientName>
+          <ingredientSequence>2</ingredientSequence>
+          <ingredientCountryOfOriginCode>DE</ingredientCountryOfOriginCode>
+        </foodAndBeverageIngredient>
 
-    </productComponentRecord>
+        <foodAndBeverageIngredient>
+          <ingredientName languageCode="DE">Helles Weizenmalz</ingredientName>
+          <ingredientSequence>3</ingredientSequence>
+          <ingredientCountryOfOriginCode>DE</ingredientCountryOfOriginCode>
+        </foodAndBeverageIngredient>
+
+        <foodAndBeverageIngredient>
+          <ingredientName languageCode="DE">Wyeast Hefe</ingredientName>
+          <ingredientSequence>4</ingredientSequence>
+          <ingredientCountryOfOriginCode>DE</ingredientCountryOfOriginCode>
+        </foodAndBeverageIngredient>
+
+        <foodAndBeverageIngredient>
+          <ingredientName languageCode="DE">Hallertaler Magnum</ingredientName>
+          <ingredientSequence>5</ingredientSequence>
+          <ingredientCountryOfOriginCode>DE</ingredientCountryOfOriginCode>
+        </foodAndBeverageIngredient>
+
+        <foodAndBeverageIngredient>
+          <ingredientName languageCode="DE">Hallertaler Hersbrucker</ingredientName>
+          <ingredientSequence>6</ingredientSequence>
+          <ingredientCountryOfOriginCode>DE</ingredientCountryOfOriginCode>
+        </foodAndBeverageIngredient>
+
+        <foodAndBeverageIngredient>
+          <ingredientName languageCode="DE">Farbmalz</ingredientName>
+          <ingredientSequence>7</ingredientSequence>
+          <ingredientCountryOfOriginCode>DE</ingredientCountryOfOriginCode>
+        </foodAndBeverageIngredient>
+
+      </fabiim:foodAndBeverageIngredientInformationModule>
+    </module>
+
+    <module>
+      <pqim:productQuantityInformationModule xmlns:pqim="urn:gs1:tsd:product_quantity_information_module:xsd:1"
+                                             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                             xsi:schemaLocation="urn:gs1:tsd:product_quantity_information_module:xsd:1 tsd/ProductQuantityInformationModule.xsd">
+
+        <netContent measurementUnitCode="millilitre" codeListVersion="1">500</netContent>
+        <percentageOfAlcoholByVolume>4.7</percentageOfAlcoholByVolume>
+
+      </pqim:productQuantityInformationModule>
+    </module>
 
   </productDataRecord>
-
-  <!--
-       The following attribute/value pair lists can be used almost
-       anywhere, what's the use?
-    <avpList>
-      <stringAVP name="foo">bar</stringAVP>
-    </avpList>
-  -->
 
 </pd:productData>
