@@ -32,6 +32,18 @@
             <h4>Biersorte:</h4>
             <div class="panel panel-default">
                 <div class="panel-body form-horizontal payment-form">
+					<div class="form-group">
+                        <label for="concept" class="col-sm-3 control-label">GTIN</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="gtin" name="gtin">
+						</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="concept" class="col-sm-3 control-label">Variante</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="variante" name="variante">
+                        </div>
+                    </div>					
                     <div class="form-group">
                         <label for="concept" class="col-sm-3 control-label">Name</label>
                         <div class="col-sm-9">
@@ -41,13 +53,13 @@
 					<div class="form-group">
                         <label for="concept" class="col-sm-3 control-label">Name(EN)</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="name" name="name">
+                            <input type="text" class="form-control" id="nameEN" name="nameEN">
                         </div>
                     </div>
 					<div class="form-group">
                         <label for="description" class="col-sm-3 control-label">Werbespruch</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="beschreibung" name="beschreibung">
+                            <input type="text" class="form-control" id="werbespruch" name="werbespruch">
                         </div>
                     </div> 
                     <div class="form-group">
@@ -59,31 +71,40 @@
 					<div class="form-group">
                         <label for="concept" class="col-sm-3 control-label">Sorte(En)</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="sorte" name="sorte">
+                            <input type="text" class="form-control" id="sorteEN" name="sorte">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="status" class="col-sm-3 control-label">Alkohol</label>
-                        <div class="col-sm-9">
-                            <select class="form-control" id="alkohol" name="alkohol">
-                                <option>Mit Alkohol</option>
-                                <option>Ohne Alkohol</option>
-                            </select>
-                        </div>
-                    </div> 
                     <div class="form-group">
                         <label for="amount" class="col-sm-3 control-label">Alkoholgehalt</label>
                         <div class="col-sm-9">
                             <input type="number" class="form-control" id="alkoholgehalt" name="alkoholgehalt">
                         </div>
-                    </div> 
+                    </div> 					
+					<div class="form-group">
+                        <label for="concept" class="col-sm-3 control-label">Inhaltstoff-Angabe</label>
+                        <div class="col-sm-9">
+                            <input type="url" class="form-control" id="inhaltsangabe" name="inhaltsangabe">
+                        </div>
+                    </div>
 					<div class="form-group">
                         <label for="status" class="col-sm-3 control-label">Inhaltsstoffe</label>
 							<div class="col-sm-9">
-								<textarea id="textArea" rows="3" class="form-control"></textarea>
+								<textarea id="inhaltsstoffe" name="inhaltsstoffe" rows="5" class="form-control"></textarea>
 								</textarea>
 							</div>
                     </div> 
+					<div class="form-group">
+                        <label for="concept" class="col-sm-3 control-label">Bild URL</label>
+                        <div class="col-sm-9">
+                            <input type="url" class="form-control" id="bildurl" name="bildurl">
+                        </div>
+                    </div>
+					<div class="form-group">
+                        <label for="concept" class="col-sm-3 control-label">Informations URL</label>
+                        <div class="col-sm-9">
+                            <input type="url" class="form-control" id="infourl" name="infourl">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <div class="col-sm-12 text-right">
                             <button type="button" class="btn btn-danger preview-add-button" onclick="add();">
@@ -97,8 +118,8 @@
         <div class="col-sm-7">
             <h4>Preview:</h4>
             <div class="row">
-								<textarea id="area" rows="4" class="form-control"></textarea>
-								</textarea>
+				<textarea id="area" name ="area" rows="4" class="form-control">
+				</textarea>
             </div>
             <div class="row">
                 <div class="col-xs-12">
