@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Duff Produkte</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+		
+		<script language="javascript" type="text/javascript">
+		function Quadrat() {
+			 alert("Das Quadrat von ");
+		}
+
+		</script> 
+
+  </head>
+  <body>
+    <h1>Hallo Boss</h1>
+		<p>
+			<label>Label name</label>
+			<input type="text" placeholder="Type something…">
+		</p>
+		<p>
+			<label>Label name</label>
+			<input type="text" placeholder="Type something…">
+		</p>
+		<p>
+			<label>Label name</label>
+			<input type="text" placeholder="Type something…">
+		</p>
+		<p>
+			<label>Label name</label>
+      <span class="input-group-addon">
+        <input type="checkbox">
+      </span>
+		</p>
+
+
+<label>Alk</label>
+      <span class="input-group-addon">
+        <input type="checkbox">
+      </span>
+  <div class="col-lg-6">
+    <div class="input-group">
+
+		<span class="add-on">%</span>
+      <input type="text" name="Eingabe">
+
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+
+
+		<p>
+			 <button type="button" class="btn btn-lg btn-default">Default</button>
+		</p>
+
+
+    <div class="form-actions">
+    <button type="submit" class="btn btn-primary" onclick="Quadrat()">Senden</button>
+    <button type="button" class="btn">Neu</button>
+    </div>
+
+
+
+
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
