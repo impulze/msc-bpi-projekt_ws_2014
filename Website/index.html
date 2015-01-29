@@ -38,18 +38,30 @@
                             <input type="text" class="form-control" id="name" name="name">
                         </div>
                     </div>
+					<div class="form-group">
+                        <label for="concept" class="col-sm-3 control-label">Name(EN)</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="name" name="name">
+                        </div>
+                    </div>
+					<div class="form-group">
+                        <label for="description" class="col-sm-3 control-label">Werbespruch</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="beschreibung" name="beschreibung">
+                        </div>
+                    </div> 
                     <div class="form-group">
                         <label for="concept" class="col-sm-3 control-label">Sorte</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="sorte" name="sorte">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="description" class="col-sm-3 control-label">Beschreibung</label>
+					<div class="form-group">
+                        <label for="concept" class="col-sm-3 control-label">Sorte(En)</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="beschreibung" name="beschreibung">
+                            <input type="text" class="form-control" id="sorte" name="sorte">
                         </div>
-                    </div> 
+                    </div>
                     <div class="form-group">
                         <label for="status" class="col-sm-3 control-label">Alkohol</label>
                         <div class="col-sm-9">
@@ -65,6 +77,13 @@
                             <input type="number" class="form-control" id="alkoholgehalt" name="alkoholgehalt">
                         </div>
                     </div> 
+					<div class="form-group">
+                        <label for="status" class="col-sm-3 control-label">Inhaltsstoffe</label>
+							<div class="col-sm-9">
+								<textarea id="textArea" rows="3" class="form-control"></textarea>
+								</textarea>
+							</div>
+                    </div> 
                     <div class="form-group">
                         <div class="col-sm-12 text-right">
                             <button type="button" class="btn btn-danger preview-add-button" onclick="add();">
@@ -78,7 +97,7 @@
         <div class="col-sm-7">
             <h4>Preview:</h4>
             <div class="row">
-								<textarea id="area">
+								<textarea id="area" rows="4" class="form-control"></textarea>
 								</textarea>
             </div>
             <div class="row">
@@ -87,9 +106,11 @@
                     <button type="button" class="btn btn-danger btn-block" onclick="neu();">Submit all and finish</button>
                 </div>                
             </div>
+			<!--
 						<div class="row">								
 								<img src="DuffMan.png" alt="DuffMan" width="20%" height="20%">
 						</div>
+			-->
         </div>
 	</div>
 </div>

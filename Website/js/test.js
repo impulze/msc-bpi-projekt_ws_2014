@@ -1,7 +1,5 @@
 
 var add = function(){
-		console.log("Test");
-
 		var name = document.getElementById('name').value;
 		var sorte = document.getElementById('sorte').value;
 		var beschr = document.getElementById('beschreibung').value;
