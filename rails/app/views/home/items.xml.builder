@@ -1,4 +1,6 @@
 # vim: ts=4 noet
+product = Product.where(gtin: params[:gtin]).first
+
 xml.instruct! :xml, :version => '1.0', :encoding => 'UTF-8'
 xml.comment! 'This is a work in progress example XML representation of one of our products.'
 xml.pd(
@@ -6,21 +8,20 @@ xml.pd(
   'xsi:schemaLocation' => 'urn:gs1:tsd:product_data:xsd:1 tsd/ProductData.xsd',
   'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
   'xmlns:pd' => 'urn:gs1:tsd:product_data:xsd:1') do
-	xml.gtin 28651951200001
+	xml.gtin ("%014d" % product[:gtin])
 	xml.comment! 'see http://en.wikipedia.org/wiki/ISO_3166-1_numeric'
-	xml.targetMarket 278
-	xml.informationProviderGLN 2865195120000
-	xml.informationProviderName 'Duff Brewery'
-	xml.timeToLive 'P1D'
-	# optional: avpList
+	xml.targetMarket product[:target_market]
+	xml.informationProviderGLN product[:provider_gln]
+	xml.informationProviderName product[:provider_name]
+    xml.comment! 'see http://www.w3schools.com/schema/schema_dtypes_date.asp (Duration DataType)'
+	xml.timeToLive product[:ttl]
 
 	xml.productDataRecord do
 		xml.comment! 'Free text field that can be used for your own purposes to differentiate between variants with the same GTIN.'
 		xml.productionVariantDescription('Classic', 'languageCode' => 'EN')
 		#xml.productionVariantDescription('Klassisch', 'languageCode' => 'DE')
 
-		# is there a ruby module for that? (i know python can generate such strings)
-		xml.productionVariantEffectiveDateTime '2014-01-01T00:00:00Z'
+		xml.productionVariantEffectiveDateTime product[:variant_dtime]
 
 		# optional: productComponentRecord
 		# optional: avpList
