@@ -3,7 +3,7 @@
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="urn:gs1:tsd:product_data:xsd:1 tsd/ProductData.xsd">
 
-  <gtin>28651951200001</gtin>
+  <gtin>02865195100017</gtin>
 
   <!-- see http://en.wikipedia.org/wiki/ISO_3166-1_numeric -->
   <targetMarket>278</targetMarket>
