@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:productData xmlns:pd="urn:gs1:tsd:product_data:xsd:1"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="urn:gs1:tsd:product_data:xsd:1 tsd/ProductData.xsd">
+
+  <gtin>02865195100052</gtin>
+
+  <!-- see http://en.wikipedia.org/wiki/ISO_3166-1_numeric -->
+  <targetMarket>278</targetMarket>
+
+  <informationProviderGLN>2865195100007</informationProviderGLN>
+
+  <informationProviderName>Duff Brewery</informationProviderName>
+
+  <!-- see http://www.w3schools.com/schema/schema_dtypes_date.asp (Duration DataType) -->
+  <timeToLive>P1D</timeToLive>
+
+  <productDataRecord>
+
+    <productionVariantDescription languageCode="DE">Duff Klassisch</productionVariantDescription>
+
+    <productionVariantEffectiveDateTime>2014-01-01T00:00:00Z</productionVariantEffectiveDateTime>
+
+    <module>
+      <bpim:basicProductInformationModule xmlns:bpim="urn:gs1:tsd:basic_product_information_module:xsd:1"
+                                          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                          xsi:schemaLocation="urn:gs1:tsd:basic_product_information_module:xsd:1 tsd/BasicProductInformationModule.xsd">
+
+        <productName languageCode="DE">Weizenbier</productName>
+        <productName languageCode="EN">Wheat beer</productName>
+
+        <consumerMarketingDescription languageCode="DE">Man sieht das Weizen vor lauter Hopfen nicht.</consumerMarketingDescription>
+
+	<!-- see http://www.gs1.org/1/productssolutions/gdsn/gpc/browser/index.html -->
+	<gpcCategoryCode>10000159</gpcCategoryCode>
+
+	<!-- regulated description according to Los-Kennzeichnungs-Verordnung (Artikel 3) -->
+	<regulatedProductName languageCode="DE">Obergäriges Bier</regulatedProductName>
+	<regulatedProductName languageCode="EN">Top-fermented beer</regulatedProductName>
+
+	<brandNameInformation>
+		<brandName>Duff</brandName>
+	</brandNameInformation>
+
+        <productInformationLink>
+
+          <url>http://example.com/duff</url>
+
+          <!-- http://apps.gs1.org/GDD/Pages/clDetails.aspx?semanticURN=urn:gs1:gdd:cl:TSD_ProductInformationTypeCode&release=1 -->
+          <productInformationTypeCode codeListVersion="1">WEBSITE</productInformationTypeCode>
+
+          <!-- language used on the website -->
+          <languageCode>DE</languageCode>
+
+        </productInformationLink>
+
+        <imageLink>
+
+          <url>http://example.com/duff.jpg</url>
+
+          <!-- see http://apps.gs1.org/GDD/Pages/clDetails.aspx?semanticURN=urn:gs1:gdd:cl:TSD_ImageTypeCode&release=1 -->
+          <imageTypeCode codeListVersion="1">PRODUCT_LABEL_IMAGE</imageTypeCode>
+
+          <imagePixelHeight>100</imagePixelHeight>
+
+          <imagePixelWidth>200</imagePixelWidth>
+
+          <!-- see http://www.gs1.org/docs/gsmp/eancom/2012/ean02s4/part3/dc313.htm -->
+          <fileSize measurementUnitCode="4L">1</fileSize>
+
+        </imageLink>
+
+        <packagingSignatureLine>
+          <!-- see http://apps.gs1.org/GDD/Pages/clDetails.aspx?semanticURN=urn:gs1:gdd:cl:TSD_PartyContactRoleCode&release=1 -->
+          <partyContactRoleCode>BRAND_OWNER</partyContactRoleCode>
+          <partyContactName>Duff Brewery</partyContactName>
+          <partyContactAddress>Elbchaussee 111, 20095 Hamburg</partyContactAddress>
+          <gln>2865195120000</gln>
+          <communicationChannel>
+            <communicationChannelCode>WEBSITE</communicationChannelCode>
+            <communicationValue>http://example.com</communicationValue>
+          </communicationChannel>
+          <communicationChannel>
+            <communicationChannelCode>TELEPHONE</communicationChannelCode>
+            <communicationValue>+494011112222333</communicationValue>
+            <communicationChannelName>Hotline</communicationChannelName>
+          </communicationChannel>
+          <communicationChannel>
+            <communicationChannelCode>EMAIL</communicationChannelCode>
+            <communicationValue>duff@example.com</communicationValue>
+          </communicationChannel>
+        </packagingSignatureLine>
+      </bpim:basicProductInformationModule>
+    </module>
+
+    <module>
+      <fabiim:foodAndBeverageIngredientInformationModule xmlns:fabiim="urn:gs1:tsd:food_and_beverage_information_module:xsd:1"
+                                                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                                         xsi:schemaLocation="urn:gs1:tsd:food_and_beverage_information_module:xsd:1 tsd/FoodAndBeverageIngredientInformationModule.xsd">
+
+        <ingredientStatement languageCode="DE">Verschiedene Malze mit Hopfen gekocht und mit verschiedenen Hefekulturen zugesetzt.</ingredientStatement>
+
+        <foodAndBeverageIngredient>
+          <ingredientName languageCode="DE">Münchener Malz</ingredientName>
+          <ingredientSequence>1</ingredientSequence>
+          <ingredientCountryOfOriginCode>DE</ingredientCountryOfOriginCode>
+        </foodAndBeverageIngredient>
+
+        <foodAndBeverageIngredient>
+          <ingredientName languageCode="DE">Helles Weizenmalz</ingredientName>
+          <ingredientSequence>2</ingredientSequence>
+          <ingredientCountryOfOriginCode>DE</ingredientCountryOfOriginCode>
+        </foodAndBeverageIngredient>
+
+        <foodAndBeverageIngredient>
+          <ingredientName languageCode="DE">Wyeast Hefe</ingredientName>
+          <ingredientSequence>3</ingredientSequence>
+          <ingredientCountryOfOriginCode>DE</ingredientCountryOfOriginCode>
+        </foodAndBeverageIngredient>
+
+        <foodAndBeverageIngredient>
+          <ingredientName languageCode="DE">Hallertaler Hersbrucker</ingredientName>
+          <ingredientSequence>4</ingredientSequence>
+          <ingredientCountryOfOriginCode>DE</ingredientCountryOfOriginCode>
+        </foodAndBeverageIngredient>
+
+        <foodAndBeverageIngredient>
+          <ingredientName languageCode="DE">Hallertaler Perle</ingredientName>
+          <ingredientSequence>5</ingredientSequence>
+          <ingredientCountryOfOriginCode>DE</ingredientCountryOfOriginCode>
+        </foodAndBeverageIngredient>
+
+      </fabiim:foodAndBeverageIngredientInformationModule>
+    </module>
+
+    <module>
+      <pqim:productQuantityInformationModule xmlns:pqim="urn:gs1:tsd:product_quantity_information_module:xsd:1"
+                                             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                             xsi:schemaLocation="urn:gs1:tsd:product_quantity_information_module:xsd:1 tsd/ProductQuantityInformationModule.xsd">
+
+        <netContent measurementUnitCode="millilitre" codeListVersion="1">500</netContent>
+        <percentageOfAlcoholByVolume>5.2</percentageOfAlcoholByVolume>
+
+      </pqim:productQuantityInformationModule>
+    </module>
+
+  </productDataRecord>
+
+</pd:productData>
+ 
