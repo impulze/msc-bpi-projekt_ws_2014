@@ -113,4 +113,10 @@ class HomeController < ApplicationController
 			#render :layout => false
 		end
 	end
+
+	def maintenance
+		respond_to do |format|
+			format.html
+		end
+	end
 end
