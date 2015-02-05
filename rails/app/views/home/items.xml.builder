@@ -2,114 +2,126 @@
 product = Product.where(gtin: params[:gtin]).first
 
 xml.instruct! :xml, :version => '1.0', :encoding => 'UTF-8'
-xml.comment! 'This is a work in progress example XML representation of one of our products.'
-xml.pd(
-  :productData,
-  'xsi:schemaLocation' => 'urn:gs1:tsd:product_data:xsd:1 tsd/ProductData.xsd',
-  'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
-  'xmlns:pd' => 'urn:gs1:tsd:product_data:xsd:1') do
+xml.pd(:productData,
+       'xsi:schemaLocation' => 'urn:gs1:tsd:product_data:xsd:1 tsd/ProductData.xsd',
+       'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
+       'xmlns:pd' => 'urn:gs1:tsd:product_data:xsd:1') do
 	xml.gtin ("%014d" % product[:gtin])
 	xml.comment! 'see http://en.wikipedia.org/wiki/ISO_3166-1_numeric'
-	xml.targetMarket product[:target_market]
-	xml.informationProviderGLN product[:provider_gln]
+	xml.targetMarket product.target_market[:string]
+	xml.informationProviderGLN ("%013d" % product[:provider_gln])
 	xml.informationProviderName product[:provider_name]
-    xml.comment! 'see http://www.w3schools.com/schema/schema_dtypes_date.asp (Duration DataType)'
+	xml.comment! 'see http://www.w3schools.com/schema/schema_dtypes_date.asp (Duration DataType)'
 	xml.timeToLive product[:ttl]
 
-	xml.productDataRecord do
-		xml.comment! 'Free text field that can be used for your own purposes to differentiate between variants with the same GTIN.'
-		xml.productionVariantDescription('Classic', 'languageCode' => 'EN')
-		#xml.productionVariantDescription('Klassisch', 'languageCode' => 'DE')
+	product.product_data_records.each do |pdr|
+		xml.productDataRecord do
+			vdesc = pdr.production_variant_description
+			xml.productionVariantDescription(vdesc[:string], 'languageCode' => vdesc[:language])
 
-		xml.productionVariantEffectiveDateTime product[:variant_dtime]
+			xml.productionVariantEffectiveDateTime pdr[:variant_effective_datetime]
 
-		# optional: productComponentRecord
-		# optional: avpList
+			# MODULES START HERE
+			pdr.basic_product_informations.each do |bi|
+				xml.module do
+					xml.bpim(:basicProductInformationModule,
+					         'xsi:schemaLocation' => 'urn:gs1:tsd:basic_product_information_module:xsd:1 tsd/BasicProductInformationModule.xsd',
+					         'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
+					         'xmlns:bpim' => 'urn:gs1:tsd:basic_product_information_module:xsd:1') do
+						bi.product_names.each do |pn|
+							xml.productName(pn[:string], 'languageCode' => pn[:language])
+						end
 
-		# MODULES START HERE
-		xml.module do
-			xml.basicProductInformationModule do
-				xml.comment! 'http://dict.leo.org/forum/viewUnsolvedquery.php?idThread=165130&idForum=1&lang=de&lp=ende'
-				xml.productName('Duff Classic - The Alt Beer', 'languageCode' => 'EN')
-				xml.consumerMarketingDescription('Not really old, just a little older than others.', 'languageCode' => 'EN')
-				#xml.productName('Duff Klassisch - Das Alt', 'languageCode' => 'DE')
-				#xml.consumerMarketingDescription('Nicht so alt, nur älter als andere.', 'languageCode' => 'DE')
+						bi.consumer_marketing_descriptions.each do |cmd|
+							xml.consumerMarketingDescription(cmd[:string], 'languageCode' => cmd[:language])
+						end
 
-				# TSD_sample.xml uses some optional elements
-				#<gpcCategoryCode>10005372</gpcCategoryCode>
-				#<regulatedProductName languageCode="us" codeListVersion="1.0">866074159</regulatedProductName>
-				#<brandNameInformation>
-				#	<brandName>brand 1</brandName>
-				#	<languageSpecificBrandName languageCode="us" codeListVersion="1.0">341681552</languageSpecificBrandName>
-				#</brandNameInformation>
+						xml.comment! 'see http://www.gs1.org/1/productssolutions/gdsn/gpc/browser/index.html'
+						xml.gpcCategoryCode bi[:gpc_category_code]
 
-				xml.productionInformationLink do
-					xml.url 'http://path.to/duffs/classic#alt'
-					# I don't know what to put in here, TSD_sample.xml uses 'VIDEO'?!
-					xml.productInformationTypeCode 'LOL'
-					xml.languageCode 'EN'
-					# optional: avpList
+						xml.comment! 'regulated description according to Los-Kennzeichnungs-Verordnung (Artikel 3)'
+						bi.regulated_product_names.each do |rpn|
+							xml.regulatedProductName(rpn[:string], 'languageCode' => rpn[:language])
+						end
+
+						xml.brandNameInformation do
+							xml.brandName bi.brand_name_information.brand_name_information_local[:string]
+						end
+
+						bi.product_information_links.each do |pil|
+							xml.productInformationLink do
+								xml.url pil[:url]
+								xml.comment! 'http://apps.gs1.org/GDD/Pages/clDetails.aspx?semanticURN=urn:gs1:gdd:cl:TSD_ProductInformationTypeCode&release=1'
+								xml.productInformationTypeCode pil.product_information_type_code_type[:string]
+								xml.comment! 'language used on the website'
+								xml.languageCode pil.language_type_code_type[:string]
+							end
+						end
+
+						bi.image_links.each do |il|
+							xml.imageLink do
+								xml.url il[:url]
+								xml.comment! 'see http://apps.gs1.org/GDD/Pages/clDetails.aspx?semanticURN=urn:gs1:gdd:cl:TSD_ImageTypeCode&release=1'
+								xml.productInformationTypeCode il.image_type_code_type[:string]
+								xml.imagePixelHeight il[:height]
+								xml.imagePixelWidth il[:width]
+								xml.comment! 'see http://www.gs1.org/docs/gsmp/eancom/2012/ean02s4/part3/dc313.htm'
+								xml.fileSize(il.measurement_type[:value], 'measurementUnitCode' => il.measurement_type[:unit_code])
+							end
+						end
+
+						bi.packaging_signature_lines.each do |psl|
+							xml.packagingSignatureLine do
+								xml.comment! 'see http://apps.gs1.org/GDD/Pages/clDetails.aspx?semanticURN=urn:gs1:gdd:cl:TSD_PartyContactRoleCode&release=1'
+								xml.partyContactRoleCode(psl.party_contact_role_code_type[:string])
+								xml.partyContactName(psl[:contact_name])
+								xml.partyContactAddress(psl[:contact_address])
+								xml.gln(psl[:gln])
+								psl.communication_channel_types.each do |cc|
+									xml.communicationChannel do
+										xml.communicationChannelCode(cc.communication_channel_code_type[:string])
+										xml.communicationChannelValue(cc[:value])
+										xml.communicationChannelName(cc[:name]) unless cc[:name].nil?
+									end
+								end
+							end
+						end
+					end
 				end
 
-				xml.imageLink do
-					xml.url 'http://upload.wikimedia.org/wikipedia/commons/0/07/AKE_Duff_Beer_IMG_5244_edit.jpg'
-					# I don't know what to put in here, TSD_sample.xml uses 'LOGO'?!
-					xml.productInformationTypeCode 'LOGO'
-					xml.imagePixelHeight 3571
-					xml.imagePixelWidth 5356
-					# TSD_sample.xml uses GRM (for gram) here, so that's that...
-					xml.fileSize(4, 'measurementUnitCode' => '4L')
-					# optional: avpList
+				pdr.food_and_beverage_ingredient_informations.each do |f|
+					xml.module do
+						xml.fabiim(:foodAndBeverageIngredientInformationModule,
+							         'xsi:schemaLocation' => 'urn:gs1:tsd:food_and_beverage_ingredient_information_module:xsd:1 tsd/FoodAndBeverageIngredientInformationModule.xsd',
+							         'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
+							         'xmlns:fabiim' => 'urn:gs1:tsd:food_and_beverage_ingredient_information_module:xsd:1') do
+							f.food_and_beverage_ingredient_statements.each do |fs|
+								xml.ingredientStatement(fs[:string], 'languageCode' => fs[:language])
+							end
+							f.food_and_beverage_ingredients.each do |fi|
+								xml.foodAndBeverageIngredient do
+									fi.food_and_beverage_ingredient_names.each do |fin|
+										xml.ingredientName(fin[:string], 'languageCode' => fin[:language])
+									end
+									xml.ingredientSequence(fi[:sequence])
+									xml.ingredientCountryOfOriginCode(fi.country_code_type[:string])
+								end
+							end
+						end
+					end
 				end
 
-				# TSD_sample.xml uses some more optional elements
-				#<packagingSignatureLine>
-				#<partyContactRoleCode codeListVersion="1.0">BRAND_OWNER</partyContactRoleCode>
-				#<partyContactName>party 1</partyContactName>
-				#<partyContactAddress>party 1 address</partyContactAddress>
-				#<gln>1234567890128</gln>
-				#<communicationChannel>
-				#	<communicationChannelCode codeListVersion="1.0">EMAIL</communicationChannelCode>
-				#	<communicationValue>com channel 1 value</communicationValue>
-				#	<communicationChannelName>com channel 1</communicationChannelName>
-				#</communicationChannel>
-
-				# optional: avpList
-			end
-
-			# taken from: http://www.bierundwir.de/bier-selbst-brauen/rezepte-altbier-bier.htm
-			xml.foodAndBeverageIngredientInformationModule do
-				# I don't know what to put in here
-				xml.ingredientStatement 'A lot of different malts go into the product. It also contains different kinds of amino-acids. Based on our specific product type the percentages and origins can differ.'
-				# I don't know what to put in here
-				xml.additivesStatement 'None.'
-				# optionals in foodAndBeverageIngredient:
-					# ingredientSequence
-					# ingredientContentPercentage
-					# ingredientCountryOfOriginCode
-					# ingredientCatchZone
-					# isIngredientHighlighted
-					# subIngredient
-					# avpList
-				xml.foodAndBeverageIngredient do
-					xml.ingredientName 'Pilsener Malz'
+				pdr.product_quantity_informations.each do |pq|
+					xml.module do
+						xml.pqim(:productQuantityInformationModule,
+							         'xsi:schemaLocation' => 'urn:gs1:tsd:product_quantity_information_module:xsd:1 tsd/ProductQuantityInformationModule.xsd',
+							         'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
+							         'xmlns:pqim' => 'urn:gs1:tsd:product_quantity_information_module:xsd:1') do
+							xml.netContent(pq.measurement_type[:value], 'measurementUnitCode' => pq.measurement_type[:unit_code])
+							xml.percentageOfAlcoholByVolume pq[:percentage_of_alcohol_by_volume]
+						end
+					end
 				end
-				xml.foodAndBeverageIngredient do
-					xml.ingredientName 'Münchener Malz'
-				end
-				xml.foodAndBeverageIngredient do
-					xml.ingredientName 'Helles Weizenmalz'
-				end
-				xml.foodAndBeverageIngredient do
-					xml.ingredientName 'Farbmalz'
-				end
-				xml.foodAndBeverageIngredient do
-					xml.ingredientName 'Hallertauer Magnum'
-				end
-				xml.foodAndBeverageIngredient do
-					xml.ingredientName 'Hallertauer Hersbrucker'
-				end
-				# optional: avpList
 			end
 		end
 	end
