@@ -62,7 +62,7 @@ xml.pd(:productData,
 							xml.imageLink do
 								xml.url il[:url]
 								xml.comment! 'see http://apps.gs1.org/GDD/Pages/clDetails.aspx?semanticURN=urn:gs1:gdd:cl:TSD_ImageTypeCode&release=1'
-								xml.productInformationTypeCode il.image_type_code_type[:string]
+								xml.imageTypeCode il.image_type_code_type[:string]
 								xml.imagePixelHeight il[:height]
 								xml.imagePixelWidth il[:width]
 								xml.comment! 'see http://www.gs1.org/docs/gsmp/eancom/2012/ean02s4/part3/dc313.htm'
@@ -80,7 +80,7 @@ xml.pd(:productData,
 								psl.communication_channel_types.each do |cc|
 									xml.communicationChannel do
 										xml.communicationChannelCode(cc.communication_channel_code_type[:string])
-										xml.communicationChannelValue(cc[:value])
+										xml.communicationValue(cc[:value])
 										xml.communicationChannelName(cc[:name]) unless cc[:name].nil?
 									end
 								end
@@ -92,9 +92,9 @@ xml.pd(:productData,
 				pdr.food_and_beverage_ingredient_informations.each do |f|
 					xml.module do
 						xml.fabiim(:foodAndBeverageIngredientInformationModule,
-							         'xsi:schemaLocation' => 'urn:gs1:tsd:food_and_beverage_ingredient_information_module:xsd:1 tsd/FoodAndBeverageIngredientInformationModule.xsd',
+							         'xsi:schemaLocation' => 'urn:gs1:tsd:food_and_beverage_information_module:xsd:1 tsd/FoodAndBeverageIngredientInformationModule.xsd',
 							         'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
-							         'xmlns:fabiim' => 'urn:gs1:tsd:food_and_beverage_ingredient_information_module:xsd:1') do
+							         'xmlns:fabiim' => 'urn:gs1:tsd:food_and_beverage_information_module:xsd:1') do
 							f.food_and_beverage_ingredient_statements.each do |fs|
 								xml.ingredientStatement(fs[:string], 'languageCode' => fs[:language])
 							end
