@@ -11,18 +11,18 @@
     <%= javascript_include_tag "https://oss.maxcdn.com/respond/1.4.2/respond.min.js" %>
   <![endif]-->
   <script type="text/javascript">
-    function add() {
-      document.getElementById("product_form").submit();
-    }
-
-    function edit() {
+    function mysubmit(hidden_field) {
       f = document.getElementById("product_form");
-      i = document.createElement("input");
-      i.setAttribute("type", "hidden");
-      i.setAttribute("name", "update");
-      i.value = "yes";
-      f.appendChild(i);
-      add();
+
+      if (hidden_field != null) {
+        i = document.createElement("input");
+        i.setAttribute("type", "hidden");
+        i.setAttribute("name", hidden_field);
+        i.value = "yes";
+        f.appendChild(i);
+      }
+
+      f.submit()
     }
 
     function change_logo() {
@@ -272,11 +272,14 @@
 					</div> 
 					<div class="form-group">
 						<div class="col-sm-12 text-right">
-							<button type="button" class="btn btn-danger preview-add-button" onclick="add();">
+							<button type="button" class="btn btn-danger preview-add-button" onclick='mysubmit(null);'>
 								<span class="glyphicon glyphicon-plus"></span> Add
 							</button>
-							<button type="button" class="btn btn-danger preview-edit-button" onclick="edit();">
+							<button type="button" class="btn btn-danger preview-edit-button" onclick='mysubmit("edit");'>
 								<span class="glyphicon glyphicon-pencil"></span> Edit
+							</button>
+							<button type="button" class="btn btn-danger preview-del-button" onclick='mysubmit("del");'>
+								<span class="glyphicon glyphicon-pencil"></span> Delete
 							</button>
 							</div>
 						</div>
@@ -289,9 +292,52 @@
 				</div>
 			</div>
 		</div>
-		<h4>Systeminformation:</h4>
-		<div class="row">
-			<textarea id="area" name ="area" rows="4" class="form-control"></textarea>
+		<h2>Interaktion mit Data-Aggregator</h2>
+		<!-- panel preview -->
+		<div class="col-sm-5" style="width: 69.99999%">
+			<div class="panel panel-default">
+				<div id="edit_product" class="panel-body form-horizontal payment-form">
+					<div class="form-group">
+						<div class="col-sm-3 control-label" style="font-weight: bold;">
+							Produkt
+						</div>
+						<div class="col-sm-9">
+							<button type="button" class="btn btn-danger preview-da_send-button" onclick='mysubmit("da_send");'>
+								<span class="glyphicon glyphicon-export"></span> Add
+							</button>
+							<button type="button" class="btn btn-danger preview-da_edit-button" onclick='mysubmit("da_edit");'>
+								<span class="glyphicon glyphicon-import"></span> Edit
+							</button>
+							<button type="button" class="btn btn-danger preview-da_del-button" onclick='mysubmit("da_del");'>
+								<span class="glyphicon glyphicon-import"></span> Delete
+							</button>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-3 control-label" style="font-weight: bold;">
+							Alle Produkte
+						</div>
+						<div class="col-sm-9">
+							<button type="button" class="btn btn-danger preview-da_send_all-button" onclick='mysubmit("da_send_all");'>
+								<span class="glyphicon glyphicon-export"></span> Add all
+							</button>
+							<button type="button" class="btn btn-danger preview-da_del_all-button" onclick='mysubmit("da_del_all");'>
+								<span class="glyphicon glyphicon-import"></span> Delete all
+							</button>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-3 control-label" style="font-weight: bold;">
+							Statusmeldungen
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-9">
+							<textarea id="area" name="area" rows="4" class="form-control"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

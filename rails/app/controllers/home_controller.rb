@@ -465,22 +465,50 @@ class HomeController < ApplicationController
 		end
 	end
 
+	def send_da
+	end
+
+	def edit_da
+	end
+
+	def del_da
+	end
+
+	def da_send_all
+	end
+
+	def da_del_all
+	end
+
 	def maintenance
 		@products = Product.all
 		@edit_product = Product.where(:gtin => params[:gtin]).first
 		@errors = []
+		@da_status = {good: => [], bad: => []}
 		@gln = 2865195100007
 
 		if request.post?
-			#begin
-				if params[:update] == 'yes'
+			begin
+				if params[:edit] == 'yes'
 					update_db(params)
+				elsif params[:del] == 'yes'
+					raise Exception.new("Deleting from database not supported yet.");
+				elsif params[:da_send] == 'yes'
+					send_da(params[:gtin])
+				elsif params[:da_edit] == 'yes'
+					edit_da(params[:gtin]
+				elsif params[:da_del] == 'yes'
+					del_da(params[:gtin]
+				elsif params[:da_send_all] == 'yes'
+					send_all_da
+				elsif params[:da_del_all] == 'yes'
+					del_all_da
 				else
 					save_db(params)
 				end
-			#rescue Exception => e
-			#	@errors << e
-			#end
+			rescue Exception => e
+				@errors << e
+			end
 		end
 
 		if @edit_product.nil?
