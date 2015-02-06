@@ -340,8 +340,10 @@ class HomeController < ApplicationController
 	def generate_gtin
 		max = Product.maximum(:gtin)
 
+		gln_prefix = @gln.to_s[0..-2].to_i
+
 		if max.nil?
-			num = '0' + (@gln + 1).to_s
+			num = '0' + (gln_prefix + 1).to_s
 		else
 		        current_max = max.to_s[0..-2].to_i
 			next_max = current_max + 1
@@ -392,7 +394,7 @@ class HomeController < ApplicationController
 
 	def fill_db
 		@errors = []
-		@gln = 286519510000
+		@gln = 2865195100007
 
 		product = {
 			:variante => 'Duff Klassisch',
@@ -467,7 +469,7 @@ class HomeController < ApplicationController
 		@products = Product.all
 		@edit_product = Product.where(:gtin => params[:gtin]).first
 		@errors = []
-		@gln = 286519510000
+		@gln = 2865195100007
 
 		if request.post?
 			#begin
