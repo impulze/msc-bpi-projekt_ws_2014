@@ -162,6 +162,7 @@ class HomeController < ApplicationController
 		require 'rmagick'
 		require 'open-uri'
 		gtin = params[:gtin]
+		gln = get_gln
 
 		tm = TargetMarket.where(:string => 276).first_or_create
 		now = DateTime.now
@@ -203,7 +204,7 @@ class HomeController < ApplicationController
 		il.image_type_code_type = itc
 		fs = MeasurementType.where(:unit_code => '4L', :value => fsize).first_or_create
 		il.measurement_type = fs
-		psl = PackagingSignatureLine.new(:contact_name => 'Duff Brewery', :contact_address => 'Elbchaussee 111, 20095 Hamburg', :gln => @gln)
+		psl = PackagingSignatureLine.new(:contact_name => 'Duff Brewery', :contact_address => 'Elbchaussee 111, 20095 Hamburg', :gln => gln)
 		pcr = PartyContactRoleCodeType.where(:string => 'BRAND_OWNER').first_or_create
 		psl.party_contact_role_code_type = pcr
 		ccw = CommunicationChannelType.new(:value => 'http://example.com')
@@ -232,7 +233,7 @@ class HomeController < ApplicationController
 		pqi = ProductQuantityInformation.new(:percentage_of_alcohol_by_volume => params[:alkoholgehalt])
 		nc = MeasurementType.where(:unit_code => 'millilitre', :value => 500).first_or_create
 		pqi.measurement_type = nc
-		p = Product.new(:gtin => gtin, :provider_gln => @gln, :provider_name => 'Duff Brewery', :ttl => 'P1D')
+		p = Product.new(:gtin => gtin, :provider_gln => gln, :provider_name => 'Duff Brewery', :ttl => 'P1D')
 		p.target_market = tm
 		bi.product_names.push(pn1)
 		bi.product_names.push(pn2)
@@ -337,26 +338,6 @@ class HomeController < ApplicationController
 		product.save!
 	end
 
-	def generate_gtin
-		max = Product.maximum(:gtin)
-
-		gln_prefix = @gln.to_s[0..-2].to_i
-
-		if max.nil?
-			num = '0' + (gln_prefix + 1).to_s
-		else
-		        current_max = max.to_s[0..-2].to_i
-			next_max = current_max + 1
-			num = '0' + next_max.to_s
-		end
-
-		check = -3 * (num[0].to_i + num[2].to_i + num[4].to_i + num[6].to_i + num[8].to_i + num[10].to_i + num[12].to_i)
-		check -= (num[1].to_i + num[3].to_i + num[5].to_i + num[7].to_i + num[9].to_i + num[11].to_i)
-		check %= 10
-
-		return num + check.to_s
-	end
-
 	def save_product(product)
 		present = ProductName.where(:string => product[:name_DE])
 
@@ -377,8 +358,7 @@ class HomeController < ApplicationController
 			:cmd_DE => product[:cmd_DE],
 			:cmd_EN => product[:cmd_EN],
 			:infourl_WEBSITE => 'http://eta-ori.net:8080/items.xml?gtin=' + gtin.to_s,
-			#:bildurl_PRODUCT_LABEL_IMAGE => 'http://eta-ori.net:8080/assets/' + gtin.to_s + '.jpg',
-			:bildurl_PRODUCT_LABEL_IMAGE => 'http://upload.wikimedia.org/wikipedia/commons/0/07/AKE_Duff_Beer_IMG_5244_edit.jpg',
+			:bildurl_PRODUCT_LABEL_IMAGE => 'http://eta-ori.net:8080/assets/products/' + gtin.to_s + '.jpg',
 			:inhaltsangabe => product[:inhaltsangabe],
 			:alkoholgehalt => product[:alkoholgehalt],
 		}
@@ -394,7 +374,6 @@ class HomeController < ApplicationController
 
 	def fill_db
 		@errors = []
-		@gln = 2865195100007
 
 		product = {
 			:variante => 'Duff Klassisch',
@@ -546,7 +525,6 @@ class HomeController < ApplicationController
 		@edit_product = Product.where(:gtin => params[:gtin]).first
 		@errors = []
 		@da_status = {:good => [], :bad => []}
-		@gln = 2865195100007
 
 		if request.post?
 			begin
