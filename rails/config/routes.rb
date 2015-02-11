@@ -64,4 +64,5 @@ DuffBrewery::Application.routes.draw do
   get '/maintenance', to: 'home#maintenance'
   post '/maintenance', to: 'home#maintenance'
   get '/fill_db', to: 'home#fill_db'
+  get '/get', to: 'home#get'
 end
