@@ -45,7 +45,7 @@ class ExampleProduct
 				end
 
 				def link.[](x)
-					return {:url => 'http://eta-ori.net:8080/items.xml?gtin=' + @gtin.to_s}[x]
+					return {:url => 'http://eta-ori.net:8080/item.xml?gtin=' + @gtin.to_s}[x]
 				end
 
 				link.set_gtin(@gtin)
@@ -146,15 +146,53 @@ class ExampleProduct
 end
 
 class HomeController < ApplicationController
+	def get_gln
+		2865195100007
+	end
+
+	def generate_gtin
+		gln = get_gln
+		max = Product.maximum(:gtin)
+
+		# This is 12 digits (removed control digit from GLN)
+		gln_prefix = gln.to_s[0..-2].to_i
+
+		if max.nil?
+			current_max = gln_prefix
+		else
+			# This is 12 digits (removed control digit from stored GTIN)
+		        current_max = max.to_s[0..-2].to_i
+		end
+
+		# Add one to the current highest used GTIN, prepend 0 (need 13 digits for calculation)
+		num = '0' + (current_max + 1).to_s
+
+		# Calculate check digit
+		check = -3 * (num[0].to_i + num[2].to_i + num[4].to_i + num[6].to_i + num[8].to_i + num[10].to_i + num[12].to_i)
+		check -= (num[1].to_i + num[3].to_i + num[5].to_i + num[7].to_i + num[9].to_i + num[11].to_i)
+		check %= 10
+
+		num + check.to_s
+	end
+
+	def send_request(request)
+		require 'net/http'
+		http = Net::HTTP.new("127.0.0.3", 18888)
+		http.request(request)
+	end
+
 	def index
 		respond_to do |format|
-			format.html
+			format.html { render 'index' }
 		end
 	end
 
-	def items
+	def item
+		@errors = []
+		@status = []
+
 		respond_to do |format|
-			format.xml
+			format.xml { render 'item' }
 		end
 	end
 
@@ -193,7 +231,11 @@ class HomeController < ApplicationController
 		pil.product_information_type_code_type = pitc
 		imgurl = params[:bildurl_PRODUCT_LABEL_IMAGE]
 		images = Magick::ImageList.new
-		imgstream = open(imgurl)
+		begin
+			imgstream = open(imgurl)
+		rescue Exception => e
+			raise Exception.new('An error occured while opening the product image URI %s (%s).' % [imgurl, e.message])
+		end
 		images.from_blob(imgstream.read)
 		width = images[0].columns
 		height = images[0].rows
@@ -338,47 +380,38 @@ class HomeController < ApplicationController
 		product.save!
 	end
 
-	def save_product(product)
-		present = ProductName.where(:string => product[:name_DE])
+	def extend_product_information_and_save(product)
+		present = ProductName.where(["string = '%s'", product[:name_DE]])
 
-		if present.length == 1
+		unless present.length == 0
 			@errors << 'Product ' + product[:name_DE] + ' already inserted'
 			return
 		end
 
 		gtin = generate_gtin
 
-		new_product = {
+		product.merge!({
 			:gtin => gtin,
-			:variante => product[:variante],
-			:name_DE => product[:name_DE],
-			:name_EN => product[:name_EN],
-			:regname_DE => product[:regname_DE],
-			:regname_EN => product[:regname_EN],
-			:cmd_DE => product[:cmd_DE],
-			:cmd_EN => product[:cmd_EN],
-			:infourl_WEBSITE => 'http://eta-ori.net:8080/items.xml?gtin=' + gtin.to_s,
-			:bildurl_PRODUCT_LABEL_IMAGE => 'http://eta-ori.net:8080/assets/products/' + gtin.to_s + '.jpg',
-			:inhaltsangabe => product[:inhaltsangabe],
-			:alkoholgehalt => product[:alkoholgehalt],
-		}
+			:infourl_WEBSITE => 'http://eta-ori.net:8080/item.xml?gtin=' + gtin.to_s,
+			:bildurl_PRODUCT_LABEL_IMAGE => 'http://eta-ori.net:8080/assets/products/' + gtin.to_s + '.jpg'
+		})
 
-		new_product[:inhaltsstoff] = { }
-
-		product[:inhaltsstoff].keys.each do |ih_key|
-			new_product[:inhaltsstoff][ih_key] = product[:inhaltsstoff][ih_key]
+		begin
+			save_db(product)
+		rescue Exception => e
+			@errors << 'Storing %s in the database resulted in an error' % product[:name_DE]
+			@errors << e
 		end
-
-		save_db(new_product)
 	end
 
 	def fill_db
 		@errors = []
+		@status = []
 
 		product = {
 			:variante => 'Duff Klassisch',
-			:name_DE => 'Altbier',
-			:name_EN => 'Alt beer',
+			:name_DE => 'Pils',
+			:name_EN => 'Pilsner',
 			:regname_DE => 'Untergäriges Bier',
 			:regname_EN => 'Bottom-fermented beer',
 			:cmd_DE => 'Duff Bier für mich, Duff Bier für dich, ich trinke Duff, ganz genüsslich',
@@ -394,17 +427,17 @@ class HomeController < ApplicationController
 			'4' => 'Hallertaler Perle'
 		}
 
-		save_product(product)
+		extend_product_information_and_save(product)
 
 		product = {
 			:variante => 'Duff Klassisch',
-			:name_DE => 'Altbier Alkoholfrei',
-			:name_EN => 'Alt beer light',
-			:regname_DE => 'Untergäriges Bier',
-			:regname_EN => 'Bottom-fermented beer',
+			:name_DE => 'Pils Alkoholfrei',
+			:name_EN => 'Pilsner light',
+			:regname_DE => 'Untergäriges alkoholfreies Bier',
+			:regname_EN => 'Bottom-fermented non-alcoholic beer',
 			:cmd_DE => 'Drink and Drive',
 			:cmd_EN => 'Drink and Drive',
-			:inhaltsangabe => 'Malz mit Hopfen gekocht und mit verschiedenen Hefekulturen zugesetzt. Alkoholfrei.',
+			:inhaltsangabe => 'Malz mit Hopfen gekocht, Alkohol entzogen und mit verschiedenen Hefekulturen zugesetzt',
 			:alkoholgehalt => 0
 		}
 
@@ -415,14 +448,14 @@ class HomeController < ApplicationController
 			'4' => 'Hallertaler Perle'
 		}
 
-		save_product(product)
+		extend_product_information_and_save(product)
 
 		product = {
 			:variante => 'Duff Klassisch',
 			:name_DE => 'Radler',
 			:name_EN => 'Radler',
-			:regname_DE => 'Untergäriges Bier mit Zitronenlimonate',
-			:regname_EN => '',
+			:regname_DE => 'Untergäriges Bier mit Zitronenlimonade',
+			:regname_EN => 'Bottom-fermented beer with lemonade',
 			:cmd_DE => 'Zielgeraden Radler',
 			:cmd_EN => '',
 			:inhaltsangabe => 'Malz mit Hopfen gekocht, mit verschiedenen Hefekulturen zugesetzt und Zitronenlimonade beigefügt.',
@@ -437,86 +470,309 @@ class HomeController < ApplicationController
 			'5' => 'Zitronenlimonade'
 		}
 
-		save_product(product)
+		extend_product_information_and_save(product)
+
+		product = {
+			:variante => 'Duff Klassisch',
+			:name_DE => 'Radler Alkoholfrei',
+			:name_EN => 'Radler Non-Alcoholic',
+			:regname_DE => 'Untergäriges alkoholfreies Bier mit Zitronenlimonade',
+			:regname_EN => 'Bottom-fermented non-alcoholic beer with lemonade',
+			:cmd_DE => 'Gewinner Radler',
+			:cmd_EN => '',
+			:inhaltsangabe => 'Malz mit Hopfen gekocht, Alkohol entzogen, mit verschiedenen Hefekulturen zugesetzt und Zitronenlimonade beigefügt.',
+			:alkoholgehalt => 0
+		}
+
+		product[:inhaltsstoff] = {
+			'1' => 'Pilsener Malz',
+			'2' => 'Wyeast Hefe',
+			'3' => 'Hallertaler Magnum',
+			'4' => 'Hallertaler Perle',
+			'5' => 'Zitronenlimonade'
+		}
+
+		extend_product_information_and_save(product)
+
+		product = {
+			:variante => 'Duff Klassisch',
+			:name_DE => 'Weizenbier',
+			:name_EN => 'Wheat beer',
+			:regname_DE => 'Obergäriges Bier',
+			:regname_EN => 'Top-fermented beer',
+			:cmd_DE => 'Man sieht das Weizen vor lauter Hopfen nicht',
+			:cmd_EN => '',
+			:inhaltsangabe => 'Malz mit Hopfen gekocht und mit verschiedenen Hefekulturen zugesetzt.',
+			:alkoholgehalt => 5.2
+		}
+
+		product[:inhaltsstoff] = {
+			'1' => 'Münchner Malz',
+			'2' => 'Helles Weizenmalz',
+			'3' => 'Wyeast Hefe',
+			'4' => 'Hallertaler Hersbrucker',
+			'5' => 'Hallertaler Perle'
+		}
+
+		extend_product_information_and_save(product)
+
+		product = {
+			:variante => 'Duff Klassisch',
+			:name_DE => 'Weizenbier Alkoholfrei',
+			:name_EN => 'Wheat beer light',
+			:regname_DE => 'Obergäriges alkoholfreies Bier',
+			:regname_EN => 'Top-fermented non-alcoholic beer',
+			:cmd_DE => 'Isotonischer',
+			:cmd_EN => '',
+			:inhaltsangabe => 'Malz mit Hopfen gekocht, Alkohol entzogen und mit verschiedenen Hefekulturen zugesetzt.',
+			:alkoholgehalt => 0
+		}
+
+		product[:inhaltsstoff] = {
+			'1' => 'Münchner Malz',
+			'2' => 'Helles Weizenmalz',
+			'3' => 'Wyeast Hefe',
+			'4' => 'Hallertaler Hersbrucker',
+			'5' => 'Hallertaler Perle'
+		}
+
+		extend_product_information_and_save(product)
+
+		product = {
+			:variante => 'Duff Klassisch',
+			:name_DE => 'Altbier',
+			:name_EN => 'Alt beer',
+			:regname_DE => 'Dunkles obergäriges Bier',
+			:regname_EN => 'Dark top-fermented beer',
+			:cmd_DE => 'Nicht so alt, nur älter als andere.',
+			:cmd_EN => '',
+			:inhaltsangabe => 'Malz mit Hopfen gekocht und mit verschiedenen Hefekulturen zugesetzt.',
+			:alkoholgehalt => 4.7
+		}
+
+		product[:inhaltsstoff] = {
+			'1' => 'Münchner Malz',
+			'2' => 'Pilsener Malz',
+			'3' => 'Helles Weizenmalz',
+			'4' => 'Wyeast Hefe',
+			'5' => 'Hallertaler Magnum',
+			'6' => 'Hallertaler Hersbrucker',
+			'7' => 'Farbmalz'
+		}
+
+		extend_product_information_and_save(product)
+
+		product = {
+			:variante => 'Duff Klassisch',
+			:name_DE => 'India Pale Ale',
+			:name_EN => 'India Pale Ale',
+			:regname_DE => 'Obergäriges Bier',
+			:regname_EN => 'Top-fermented beer',
+			:cmd_DE => 'Nur Hopfen hält den Seemann wach.',
+			:cmd_EN => '',
+			:inhaltsangabe => 'Malz mit Hopfen gekocht und mit verschiedenen Hefekulturen zugesetzt.',
+			:alkoholgehalt => 6.4
+		}
+
+		product[:inhaltsstoff] = {
+			'1' => 'Pilsener Malz',
+			'2' => 'Münchner Malz',
+			'3' => 'Karamellmalz',
+			'4' => 'Herkules',
+			'5' => 'Citra',
+			'6' => 'Cascade',
+		}
+
+		extend_product_information_and_save(product)
+
+		product = {
+			:variante => 'Duff Klassisch',
+			:name_DE => 'Double India Pale Ale',
+			:name_EN => 'Double India Pale Ale',
+			:regname_DE => 'Obergäriges Bier',
+			:regname_EN => 'Top-fermented beer',
+			:cmd_DE => 'Mehr Hopfen hält den Seemann wacher.',
+			:cmd_EN => '',
+			:inhaltsangabe => 'Malz mit Hopfen gekocht und mit verschiedenen Hefekulturen zugesetzt.',
+			:alkoholgehalt => 8.3
+		}
+
+		product[:inhaltsstoff] = {
+			'1' => 'Pilsener Malz',
+			'2' => 'Karamellmalz',
+			'3' => 'Columbus',
+			'4' => 'Chinook',
+			'5' => 'Amarillo',
+			'6' => 'Simcoe',
+		}
+
+		extend_product_information_and_save(product)
+
+		product = {
+			:variante => 'Duff Klassisch',
+			:name_DE => 'Champagnerweizen',
+			:name_EN => 'Champaign wheat beer',
+			:regname_DE => 'Obergäriges Bier',
+			:regname_EN => 'Top-fermented beer',
+			:cmd_DE => 'Bier ist niemals zu edel.',
+			:cmd_EN => '',
+			:inhaltsangabe => 'Malz mit Hopfen gekocht und mit verschiedenen Hefekulturen zugesetzt.',
+			:alkoholgehalt => 6.5
+		}
+
+		product[:inhaltsstoff] = {
+			'1' => 'Pilsener Malz',
+			'2' => 'Helles Weizenmalz',
+			'3' => 'Cara Hell',
+			'4' => 'Wyeast Hefe',
+			'5' => 'Hallertauer Magnum',
+			'6' => 'Hallertaler Perle',
+			'7' => 'Kitzinger Champagner-Hefe'
+		}
+
+		extend_product_information_and_save(product)
+
+		product = {
+			:variante => 'Duff Klassisch',
+			:name_DE => 'Kölsch',
+			:name_EN => 'Kölsch',
+			:regname_DE => 'Obergäriges Bier',
+			:regname_EN => 'Top-fermented beer',
+			:cmd_DE => 'Kleine Gläser, großes Kölsch.',
+			:cmd_EN => '',
+			:inhaltsangabe => 'Malz mit Hopfen gekocht und mit verschiedenen Hefekulturen zugesetzt.',
+			:alkoholgehalt => 4.8
+		}
+
+		product[:inhaltsstoff] = {
+			'1' => 'Pilsener Malz',
+			'2' => 'Cara Hell',
+			'3' => 'Wyeast Hefe',
+			'4' => 'Northern Brewer',
+			'5' => 'S33 Fermentis'
+		}
+
+		extend_product_information_and_save(product)
 
 		respond_to do |format|
-			format.html { render "index" }
+			format.html
 		end
 	end
 
 	def send_da(gtin)
-		require 'net/http'
-		require 'uri'
-		require 'digest/hmac'
-		require 'builder'
-		http = Net::HTTP.new("127.0.0.3", 18888)
-		requri = '/service/v1/product_data/gtin'
-		requri += '?clientGln=2865195100007'
-		key = '35317388292d936aebdb275e526b7e10b8d10bb4d055a351c823fa59799e1fd7'
-		xml = build_xml(Builder::XmlMarkup.new, gtin)
-		hmac = Digest::HMAC.hexdigest(requri, key, Digest::SHA256)
-		request = Net::HTTP::Post.new(requri + '&mac=' + hmac.upcase, initheader = {'Content-Type' => 'application/xml'})
-		request.body = xml
-		response = http.request(request)
-		raise Exception.new(response.body)
+		begin
+			require 'net/http'
+			require 'digest/hmac'
+			require 'builder'
+			requri = '/service/v1/product_data/gtin'
+			requri += '?clientGln=2865195100007'
+			key = '35317388292d936aebdb275e526b7e10b8d10bb4d055a351c823fa59799e1fd7'
+			xml = build_xml(Builder::XmlMarkup.new, gtin)
+			hmac = Digest::HMAC.hexdigest(requri, key, Digest::SHA256)
+			request = Net::HTTP::Post.new(requri + '&mac=' + hmac.upcase, initheader = {'Content-Type' => 'application/xml'})
+			request.body = xml
+			@response = send_request(request)
+		rescue Exception => e
+			product = Product.where(:gtin => gtin)
+			@errors << 'Getting %s from data aggregator failed' % product[:name_DE]
+			@errors << e
+		else
+			@status << @response.inspect
+		end
 	end
 
 	def edit_da(gtin)
-		require 'net/http'
-		require 'uri'
-		require 'digest/hmac'
-		require 'builder'
-		http = Net::HTTP.new("127.0.0.3", 18888)
-		requri = '/service/v1/product_data/gtin/%014d' % gtin
-		requri += '?clientGln=2865195100007'
-		requri += '&targetMarket=276'
-		key = '35317388292d936aebdb275e526b7e10b8d10bb4d055a351c823fa59799e1fd7'
-		xml = build_xml(Builder::XmlMarkup.new, gtin)
-		hmac = Digest::HMAC.hexdigest(requri, key, Digest::SHA256)
-		request = Net::HTTP::Put.new(requri + '&mac=' + hmac.upcase, initheader = {'Content-Type' => 'application/xml'})
-		request.body = xml
-		response = http.request(request)
+		begin
+			require 'net/http'
+			require 'digest/hmac'
+			require 'builder'
+			requri = '/service/v1/product_data/gtin/%014d' % gtin
+			requri += '?clientGln=2865195100007'
+			requri += '&targetMarket=276'
+			key = '35317388292d936aebdb275e526b7e10b8d10bb4d055a351c823fa59799e1fd7'
+			xml = build_xml(Builder::XmlMarkup.new, gtin)
+			hmac = Digest::HMAC.hexdigest(requri, key, Digest::SHA256)
+			request = Net::HTTP::Put.new(requri + '&mac=' + hmac.upcase, initheader = {'Content-Type' => 'application/xml'})
+			request.body = xml
+			@response = send_request(request)
+		rescue Exception => e
+			product = Product.where(:gtin => gtin)
+			@errors << 'Updating %s at data aggregator failed' % product[:name_DE]
+			@errors << e
+		else
+			@status << @response.inspect
+		end
 	end
 
 	def del_da(gtin)
-		require 'net/http'
-		require 'uri'
-		require 'digest/hmac'
-		require 'builder'
-		http = Net::HTTP.new("127.0.0.3", 18888)
-		requri = '/service/v1/product_data/gtin/%014d' % gtin
-		requri += '?clientGln=2865195100007'
-		requri += '&targetMarket=276'
-		key = '35317388292d936aebdb275e526b7e10b8d10bb4d055a351c823fa59799e1fd7'
-		hmac = Digest::HMAC.hexdigest(requri, key, Digest::SHA256)
-		request = Net::HTTP::Delete.new(requri + '&mac=' + hmac.upcase)
-		response = http.request(request)
-		raise Exception.new(response.inspect)
+		begin
+			require 'net/http'
+			require 'digest/hmac'
+			require 'builder'
+			requri = '/service/v1/product_data/gtin/%014d' % gtin
+			requri += '?clientGln=2865195100007'
+			requri += '&targetMarket=276'
+			key = '35317388292d936aebdb275e526b7e10b8d10bb4d055a351c823fa59799e1fd7'
+			hmac = Digest::HMAC.hexdigest(requri, key, Digest::SHA256)
+			request = Net::HTTP::Delete.new(requri + '&mac=' + hmac.upcase)
+			@response = send_request(request)
+		rescue Exception => e
+			product = Product.where(:gtin => gtin)
+			@errors << 'Deleting %s at data aggregator failed' % product[:name_DE]
+			@errors << e
+		else
+			@status << response.inspect
+		end
 	end
 
-	def da_send_all
+	def send_all_da
+		products = Product.select(:gtin)
+
+		if not products.nil?
+			products.each do |pr|
+				send_da(pr[:gtin])
+			end
+		end
 	end
 
-	def da_del_all
+	def del_all_da
+		products = Product.select(:gtin)
+
+		if not products.nil?
+			products.each do |pr|
+				del_da(pr[:gtin])
+			end
+		end
 	end
 
 	def get
-		require 'net/http'
-		require 'uri'
-		require 'digest/hmac'
-		http = Net::HTTP.new("127.0.0.3", 18888)
-		requri = '/service/v1/product_data/gtin/%014d' % params[:gtin]
-		requri += '?clientGln=2865195100007'
-		requri += '&targetMarket=276'
-		key = '35317388292d936aebdb275e526b7e10b8d10bb4d055a351c823fa59799e1fd7'
-		hmac = Digest::HMAC.hexdigest(requri, key, Digest::SHA256)
-		request = Net::HTTP::Get.new(requri + '&mac=' + hmac.upcase)
-		response = http.request(request)
+		@errors = []
+		@status = []
 
-		@response = response.body
+		begin
+			require 'net/http'
+			require 'uri'
+			require 'digest/hmac'
+			requri = '/service/v1/product_data/gtin/%014d' % params[:gtin]
+			requri += '?clientGln=2865195100007'
+			requri += '&targetMarket=276'
+			key = '35317388292d936aebdb275e526b7e10b8d10bb4d055a351c823fa59799e1fd7'
+			hmac = Digest::HMAC.hexdigest(requri, key, Digest::SHA256)
+			request = Net::HTTP::Get.new(requri + '&mac=' + hmac.upcase)
+			@response = send_request(request)
+		rescue Exception => e
+			@errors << 'Getting %s from data aggregator failed' % product[:name_DE]
+			@errors << e
+		else
+			@status << @response.inspect
+		end
 
 		respond_to do |format|
-			format.html
+			if params.has_key? :raw
+				format.xml
+			else
+				format.html
+			end
 		end
 	end
 
@@ -524,12 +780,14 @@ class HomeController < ApplicationController
 		@products = Product.all
 		@edit_product = Product.where(:gtin => params[:gtin]).first
 		@errors = []
-		@da_status = {:good => [], :bad => []}
+		@status = []
 
 		if request.post?
 			begin
 				if params[:edit] == 'yes'
 					update_db(params)
+				elsif params[:add] == 'yes'
+					save_db(params)
 				elsif params[:del] == 'yes'
 					raise Exception.new("Deleting from database not supported yet.");
 				elsif params[:da_send] == 'yes'
@@ -542,8 +800,6 @@ class HomeController < ApplicationController
 					send_all_da
 				elsif params[:da_del_all] == 'yes'
 					del_all_da
-				else
-					save_db(params)
 				end
 			rescue Exception => e
 				@errors << e
@@ -565,6 +821,9 @@ class HomeController < ApplicationController
 
 	def build_xml(xml, gtin)
 		product = Product.where(gtin: gtin).first
+		if product.nil?
+			product = ExampleProduct.new(gtin)
+		end
 		xml.instruct! :xml, :version => '1.0', :encoding => 'UTF-8'
 		xml.pd(:productData,
 		       'xsi:schemaLocation' => 'urn:gs1:tsd:product_data:xsd:1 tsd/ProductData.xsd',

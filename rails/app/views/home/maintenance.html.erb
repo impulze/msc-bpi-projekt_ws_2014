@@ -155,39 +155,31 @@
 <% end %>
 
 <% unless @products.length == 0 %>
-<h2>Vorhandene Produkte bearbeiten</h2>
-<ul style="color: black;">
+<div style="background: black; opacity: 0.6; color: white; margin: 1em; padding: 1em;">
+<h1>Vorhandene Produkte bearbeiten</h1>
+<ul>
 <% @products.each do |p| %>
-	<li><a style="color: black; font-size: 1.2em;" href="/maintenance.html?gtin=<%= p[:gtin] %>"><%= p.product_data_records[0].basic_product_informations[0].product_names[0][:string] %> (GTIN: <%= p[:gtin] %>)</a></li>
+	<li><a style="font-size: 1.2em;" href="/maintenance?gtin=<%= p[:gtin] %>"><%= p.product_data_records[0].basic_product_informations[0].product_names[0][:string] %> (GTIN: <span style="font-style: italic;"><%= p[:gtin] %></span>)</a></li>
 <% end %>
 </ul>
-<% end %>
-
-<% unless @errors.length == 0 %>
-<h2>Fehler beim Hinzufügen oder Ändern des Produkts</h2>
-<p style="color:red; font-weight: bold;">
-<% @errors.each do |err| %>
-	<textarea rows="3" cols="100"><%= err %></textarea></li>
-<% end %>
-</p>
+</div>
 <% end %>
 
 <form method="post" id="product_form">
 <div class="container">
 	<div class="row">
-		<!-- panel preview -->
 		<div class="col-sm-5" style="width: 69.99999%">
 			<h4>Produktinformationen</h4>
 			<div class="panel panel-default">
-				<div id="edit_product" class="panel-body form-horizontal payment-form">
+				<div id="edit_product1" class="panel-body form-horizontal payment-form">
 					<div class="form-group">
-						<label for="concept" class="col-sm-3 control-label">GTIN</label>
+						<label for="gtin" class="col-sm-3 control-label">GTIN</label>
 						<div class="col-sm-9">
 							<input type="number" class="form-control" id="gtin" name="gtin" readonly="readonly" value="<%= @edit_product[:gtin] %>">
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="concept" class="col-sm-3 control-label">Variante</label>
+						<label for="variante" class="col-sm-3 control-label">Variante</label>
 						<div class="col-sm-9">
 							<input type="text" class="form-control" id="variante" name="variante" value="<%= @edit_product.product_data_records[0].production_variant_description[:string] %>">
 						</div>
@@ -195,7 +187,7 @@
 
 					<% @edit_bi.product_names.each do |pn| %>
 					<div class="form-group">
-						<label for="amount" class="col-sm-3 control-label">Produktname (<%= pn[:language] %>)</label>
+						<label for="name_<%= pn[:language] %>" class="col-sm-3 control-label">Produktname (<%= pn[:language] %>)</label>
 						<div class="col-sm-9">
 							<input type="text" class="form-control" id="name_<%= pn[:language] %>" name="name_<%= pn[:language] %>" value="<%= pn[:string] %>">
 						</div>
@@ -204,7 +196,7 @@
 
 					<% @edit_bi.regulated_product_names.each do |rpn| %>
 					<div class="form-group">
-						<label for="amount" class="col-sm-3 control-label">Regulierter Produktname (<%= rpn[:language] %>)</label>
+						<label for="regname_<%= rpn[:language] %>" class="col-sm-3 control-label">Regulierter Produktname (<%= rpn[:language] %>)</label>
 						<div class="col-sm-9">
 							<input type="text" class="form-control" id="regname_<%= rpn[:language] %>" name="regname_<%= rpn[:language] %>" value="<%= rpn[:string] %>">
 						</div>
@@ -213,7 +205,7 @@
 
 					<% @edit_bi.consumer_marketing_descriptions.each do |cmd| %>
 					<div class="form-group">
-						<label for="amount" class="col-sm-3 control-label">Werbespruch (<%= cmd[:language] %>)</label>
+						<label for="cmd_<%= cmd[:language] %>" class="col-sm-3 control-label">Werbespruch (<%= cmd[:language] %>)</label>
 						<div class="col-sm-9">
 							<input type="text" class="form-control" id="cmd_<%= cmd[:language] %>" name="cmd_<%= cmd[:language] %>" value="<%= cmd[:string] %>">
 						</div>
@@ -223,9 +215,9 @@
 					<% @edit_bi.product_information_links.each do |pil| %>
 					<% t = pil.product_information_type_code_type[:string] %>
 					<div class="form-group">
-						<label for="amount" class="col-sm-3 control-label">Informations-URL (<%= t %>)</label>
+						<label for="infourl_<%= t %>" class="col-sm-3 control-label">Informations-URL (<%= t %>)</label>
 						<div class="col-sm-9">
-							<input type="text" class="form-control" readonly="readonly" id="infourl_<%= t %>" name="infourl_<%= t %>" value="<%= pil[:url] %>">
+							<input type="url" class="form-control" readonly="readonly" id="infourl_<%= t %>" name="infourl_<%= t %>" value="<%= pil[:url] %>">
 						</div>
 					</div>
 					<% end %>
@@ -233,27 +225,27 @@
 					<% @edit_bi.image_links.each do |il| %>
 					<% t = il.image_type_code_type[:string] %>
 					<div class="form-group">
-						<label for="amount" class="col-sm-3 control-label">Bild-URL (<%= t %>)</label>
+						<label for="bildurl_<%= t %>" class="col-sm-3 control-label">Bild-URL (<%= t %>)</label>
 						<div class="col-sm-9">
-							<input type="text" class="form-control" onchange="change_logo();" id="bildurl_<%= t %>" name="bildurl_<%= t %>" value="<%= il[:url] %>">
+							<input type="url" class="form-control" onchange="change_logo();" id="bildurl_<%= t %>" name="bildurl_<%= t %>" value="<%= il[:url] %>">
 						</div>
 					</div>
 					<% end %>
 
 					<div class="form-group">
-						<label for="amount" class="col-sm-3 control-label">Alkoholgehalt</label>
+						<label for="alkoholgehalt" class="col-sm-3 control-label">Alkoholgehalt</label>
 						<div class="col-sm-9">
 							<input type="number" class="form-control" id="alkoholgehalt" name="alkoholgehalt" value="<%= @edit_pqi[:percentage_of_alcohol_by_volume] %>">
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="concept" class="col-sm-3 control-label">Inhaltstoff-Angabe</label>
+						<label for="inhaltsangabe" class="col-sm-3 control-label">Inhaltstoff-Angabe</label>
 						<div class="col-sm-9">
-							<input type="url" class="form-control" id="inhaltsangabe" name="inhaltsangabe" value="<%= @edit_fabii.food_and_beverage_ingredient_statements[0][:string] %>">
+							<input type="text" class="form-control" id="inhaltsangabe" name="inhaltsangabe" value="<%= @edit_fabii.food_and_beverage_ingredient_statements[0][:string] %>">
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="status" class="col-sm-3 control-label">Inhaltsstoffe</label>
+						<label class="col-sm-3 control-label">Inhaltsstoffe</label>
 						<div class="col-sm-9" id="inhaltsstoffe">
 							<% @edit_fabii.food_and_beverage_ingredients.each do |fi| %>
 							<% cnt = @edit_fabii.food_and_beverage_ingredients.length %>
@@ -272,69 +264,66 @@
 					</div> 
 					<div class="form-group">
 						<div class="col-sm-12 text-right">
-							<button type="button" class="btn btn-danger preview-add-button" onclick='mysubmit(null);'>
+							<button type="button" class="btn btn-danger preview-add-button" onclick='mysubmit("add");'>
 								<span class="glyphicon glyphicon-plus"></span> Add
 							</button>
 							<button type="button" class="btn btn-danger preview-edit-button" onclick='mysubmit("edit");'>
 								<span class="glyphicon glyphicon-pencil"></span> Edit
 							</button>
 							<button type="button" class="btn btn-danger preview-del-button" onclick='mysubmit("del");'>
-								<span class="glyphicon glyphicon-pencil"></span> Delete
+								<span class="glyphicon glyphicon-minus"></span> Delete
 							</button>
-							</div>
+							<a class="btn btn-danger preview-xml-button" href="/item.xml?gtin=<%= @edit_product[:gtin] %>">
+								<span class="glyphicon glyphicon-envelope"></span> XML
+							</a>
 						</div>
 					</div>
-				</div>
-			</div> <!-- / panel preview -->
-			<div class="col-sm-7" style="width: 30%">
-				<h4>Logo</h4>
-				<div id="logo">
 				</div>
 			</div>
 		</div>
-		<h2>Interaktion mit Data-Aggregator</h2>
-		<!-- panel preview -->
-		<div class="col-sm-5" style="width: 69.99999%">
-			<div class="panel panel-default">
-				<div id="edit_product" class="panel-body form-horizontal payment-form">
-					<div class="form-group">
-						<div class="col-sm-3 control-label" style="font-weight: bold;">
-							Produkt
-						</div>
-						<div class="col-sm-9">
-							<button type="button" class="btn btn-danger preview-da_send-button" onclick='mysubmit("da_send");'>
-								<span class="glyphicon glyphicon-export"></span> Add
-							</button>
-							<button type="button" class="btn btn-danger preview-da_edit-button" onclick='mysubmit("da_edit");'>
-								<span class="glyphicon glyphicon-import"></span> Edit
-							</button>
-							<button type="button" class="btn btn-danger preview-da_del-button" onclick='mysubmit("da_del");'>
-								<span class="glyphicon glyphicon-import"></span> Delete
-							</button>
-						</div>
+		<div class="col-sm-7" style="width: 30%">
+			<h4>Logo</h4>
+			<div id="logo">
+			</div>
+		</div>
+	</div>
+	<h2>Interaktion mit Data-Aggregator</h2>
+	<div class="col-sm-5" style="width: 69.99999%">
+		<div class="panel panel-default">
+			<div id="edit_product2" class="panel-body form-horizontal payment-form">
+				<div class="form-group">
+					<div class="col-sm-3 control-label" style="font-weight: bold;">
+						Produkt
 					</div>
-					<div class="form-group">
-						<div class="col-sm-3 control-label" style="font-weight: bold;">
-							Alle Produkte
-						</div>
-						<div class="col-sm-9">
-							<button type="button" class="btn btn-danger preview-da_send_all-button" onclick='mysubmit("da_send_all");'>
-								<span class="glyphicon glyphicon-export"></span> Add all
-							</button>
-							<button type="button" class="btn btn-danger preview-da_del_all-button" onclick='mysubmit("da_del_all");'>
-								<span class="glyphicon glyphicon-import"></span> Delete all
-							</button>
-						</div>
+					<div class="col-sm-9">
+						<button type="button" class="btn btn-danger preview-da_send-button" onclick='mysubmit("da_send");'>
+							<span class="glyphicon glyphicon-export"></span> Add
+						</button>
+						<button type="button" class="btn btn-danger preview-da_edit-button" onclick='mysubmit("da_edit");'>
+							<span class="glyphicon glyphicon-pencil"></span> Edit
+						</button>
+						<button type="button" class="btn btn-danger preview-da_del-button" onclick='mysubmit("da_del");'>
+							<span class="glyphicon glyphicon-import"></span> Delete
+						</button>
+						<a class="btn btn-danger preview-da_xml-button" href="/get?gtin=<%= @edit_product[:gtin] %>">
+							<span class="glyphicon glyphicon-envelope"></span> XML
+						</a>
+						<a class="btn btn-danger preview-da_xml-button" href="/get.xml?raw&gtin=<%= @edit_product[:gtin] %>">
+							<span class="glyphicon glyphicon-envelope"></span> XML (raw)
+						</a>
 					</div>
-					<div class="form-group">
-						<div class="col-sm-3 control-label" style="font-weight: bold;">
-							Statusmeldungen
-						</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-3 control-label" style="font-weight: bold;">
+						Alle Produkte
 					</div>
-					<div class="form-group">
-						<div class="col-sm-9">
-							<textarea id="area" name="area" rows="4" class="form-control"></textarea>
-						</div>
+					<div class="col-sm-9">
+						<button type="button" class="btn btn-danger preview-da_send_all-button" onclick='mysubmit("da_send_all");'>
+							<span class="glyphicon glyphicon-export"></span> Add all
+						</button>
+						<button type="button" class="btn btn-danger preview-da_del_all-button" onclick='mysubmit("da_del_all");'>
+							<span class="glyphicon glyphicon-import"></span> Delete all
+						</button>
 					</div>
 				</div>
 			</div>

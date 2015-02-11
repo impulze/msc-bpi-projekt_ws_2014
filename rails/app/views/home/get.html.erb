@@ -1,1 +1,8 @@
-<%= @response %>
+<% if @response.code == '200' %>
+<div style="background: black; opacity: 0.6; color: white; margin: 1em; padding: 1em;">
+ <h2>Received XML data</h2>
+ <pre>
+<%= @response.body %>
+ </pre>
+</div>
+<% end %>

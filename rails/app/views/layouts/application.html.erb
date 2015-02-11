@@ -13,6 +13,56 @@
 </head>
 <body>
 
+<div style="background: black; opacity: 0.6; color: white; margin: 1em; padding: 1em;">
+ <h1>Welcome to the web presentation of the Duff Brewery</h1>
+ <ul style="font-width: bold; list-style-type: circle;">
+   <li><%= link_to 'Home', '/' %></li>
+   <li><%= link_to 'Have a Duff!', '/having' %></li>
+   <li><%= link_to 'Maintenance', '/maintenance' %></li>
+   <li><%= link_to 'Reset datatabase', '/fill_db' %></li>
+ </ul>
+</div>
+
+<% if not @errors.nil? and not @errors.empty? %>
+<div style="background: white; opacity: 0.8; color: black; mragin: 1em; padding: 1em;">
+ <h2>Errors occured during your last process</h2>
+ <p style="font-width: bold; border: 4px solid black; padding: 5px;">
+<% @errors.each do |err| %>
+ <% if err.is_a?(Exception) %>
+  <%= err %><br>
+  Backtrace:<br>
+  <% err.backtrace.each do |err_bt| %>
+   <span style="margin-left: 10px;"><%= err_bt %></span><br>
+  <% end %>
+ <% else %>
+  <%= err %><br>
+ <% end %>
+ <span style="display: block; width: 100%; border-bottom: 1px solid black; margin-top: 2px; margin-bottom: 2px;"></span>
+<% end %>
+ </p>
+</div>
+<% end %>
+
+<% if not @status.nil? and not @status.empty? %>
+<div style="background: white; opacity: 0.6; color: black; margin: 1em; padding: 1em;">
+ <h2>Status report of your last process</h2>
+ <p style="font-width: bold; border: 2px solid black; padding: 5px;">
+<% @status.each do |st| %>
+ <% if st.is_a?(Exception) %>
+  <%= st %><br>
+  Backtrace:<br>
+  <% st.backtrace.each do |st| %>
+   <span style="margin-left: 10px;"><%= st %></span><br>
+  <% end %>
+ <% else %>
+  <%= st %><br>
+ <% end %>
+ <hr>
+<% end %>
+ </p>
+</div>
+<% end %>
+
 <%= yield %>
 
 </body>
