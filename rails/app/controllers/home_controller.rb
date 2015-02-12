@@ -2,8 +2,9 @@
 # vim: ts=2
 
 class ExampleProduct
-	def initialize(gtin)
+	def initialize(gtin, gln)
 		@gtin = gtin
+		@gln = gln
 	end
 
 	def product_data_records
@@ -40,6 +41,10 @@ class ExampleProduct
 					return {:string => 'WEBSITE'}
 				end
 
+				def link.language_type_code_type
+					return {:string => 'DE'}
+				end
+
 				def link.set_gtin(gtin)
 					@gtin = gtin
 				end
@@ -64,11 +69,33 @@ class ExampleProduct
 					return {:string => 'PRODUCT_LABEL_IMAGE'}
 				end
 
+				def link.measurement_type
+					return {:value => '2', :unit_code => '10'}
+				end
+
 				def link.[](x)
 					return {:url => 'http://upload.wikimedia.org/wikipedia/commons/0/07/AKE_Duff_Beer_IMG_5244_edit.jpg'}[x]
 				end
 
 				return [link]
+			end
+
+			def bi.[](x)
+				return {:gpc_category_code => 1}
+			end
+
+			def bi.brand_name_information
+				bni = Class.new
+
+				def bni.brand_name_information_local
+					return {:string => 'Local brand'}
+				end
+
+				bni
+			end
+
+			def bi.packaging_signature_lines
+				[]
 			end
 
 			bi.set_gtin(@gtin)
@@ -94,6 +121,16 @@ class ExampleProduct
 					]
 				end
 
+				def ing1.country_code_type
+					i1cc = Class.new
+
+					def i1cc.[](x)
+						return {:string => 'DE'}[x]
+					end
+
+					i1cc
+				end
+
 				def ing1.[](x)
 					return {:sequence => 1}[x]
 				end
@@ -104,6 +141,16 @@ class ExampleProduct
 					return [
 						{:string => 'Noch eine Zutat'},
 					]
+				end
+
+				def ing2.country_code_type
+					i2cc = Class.new
+
+					def i2cc.[](x)
+						return {:string => 'DE'}[x]
+					end
+
+					i2cc
 				end
 
 				def ing2.[](x)
@@ -119,6 +166,10 @@ class ExampleProduct
 		def pdr.product_quantity_informations
 			pqi = Class.new
 
+			def pqi.measurement_type
+				return {:value => '2', :unit_code => '10'}
+			end
+
 			def pqi.[](x)
 				return {:percentage_of_alcohol_by_volume => 5}[x]
 			end
@@ -130,6 +181,10 @@ class ExampleProduct
 			return {:string => 'Variante'}
 		end
 
+		def pdr.[](x)
+			return {:variant_effective_datetime => ''}[x]
+		end
+
 		def pdr.set_gtin(gtin)
 			@gtin = gtin
 		end
@@ -139,8 +194,23 @@ class ExampleProduct
 		[pdr]
 	end
 
+	def target_market
+		tm = Class.new
+
+		def tm.[](x)
+			return {:string => '276'}[x]
+		end
+
+		tm
+	end
+
 	def [](x)
-		return {:gtin => @gtin}[x]
+		return {
+			:gtin => @gtin,
+			:provider_gln => @gln,
+			:provider_name => 'Duff Brewery',
+			:ttl => 'P1D',
+			}[x]
 	end
 
 end
@@ -172,7 +242,7 @@ class HomeController < ApplicationController
 		check -= (num[1].to_i + num[3].to_i + num[5].to_i + num[7].to_i + num[9].to_i + num[11].to_i)
 		check %= 10
 
-		num + check.to_s
+		(num + check.to_s)[1..-1]
 	end
 
 	def send_request(request)
@@ -674,7 +744,11 @@ class HomeController < ApplicationController
 			@response = send_request(request)
 		rescue Exception => e
 			product = Product.where(:gtin => gtin)
-			@errors << 'Getting %s from data aggregator failed' % product[:name_DE]
+			if product.nil?
+				@errors << 'Getting GTIN %d from data aggregator failed' % gtin
+			else
+				@errors << 'Getting %s from data aggregator failed' % product[:name_DE]
+			end
 			@errors << e
 		else
 			@status << @response.inspect
@@ -697,7 +771,11 @@ class HomeController < ApplicationController
 			@response = send_request(request)
 		rescue Exception => e
 			product = Product.where(:gtin => gtin)
-			@errors << 'Updating %s at data aggregator failed' % product[:name_DE]
+			if product.nil?
+				@errors << 'Updating GTIN %d at data aggregator failed' % gtin
+			else
+				@errors << 'Updating %s at data aggregator failed' % product[:name_DE]
+			end
 			@errors << e
 		else
 			@status << @response.inspect
@@ -718,10 +796,14 @@ class HomeController < ApplicationController
 			@response = send_request(request)
 		rescue Exception => e
 			product = Product.where(:gtin => gtin)
-			@errors << 'Deleting %s at data aggregator failed' % product[:name_DE]
+			if product.nil?
+				@errors << 'Deleting GTIN %d at data aggregator failed' % gtin
+			else
+				@errors << 'Deleting %s at data aggregator failed' % product[:name_DE]
+			end
 			@errors << e
 		else
-			@status << response.inspect
+			@status << @response.inspect
 		end
 	end
 
@@ -761,7 +843,7 @@ class HomeController < ApplicationController
 			request = Net::HTTP::Get.new(requri + '&mac=' + hmac.upcase)
 			@response = send_request(request)
 		rescue Exception => e
-			@errors << 'Getting %s from data aggregator failed' % product[:name_DE]
+			@errors << 'Getting GTIN %s from data aggregator failed' % params[:gtin]
 			@errors << e
 		else
 			@status << @response.inspect
@@ -807,7 +889,7 @@ class HomeController < ApplicationController
 		end
 
 		if @edit_product.nil?
-			@edit_product = ExampleProduct.new(generate_gtin)
+			@edit_product = ExampleProduct.new(generate_gtin, get_gln)
 		end
 
 		@edit_bi = @edit_product.product_data_records[0].basic_product_informations[0]
@@ -822,7 +904,7 @@ class HomeController < ApplicationController
 	def build_xml(xml, gtin)
 		product = Product.where(gtin: gtin).first
 		if product.nil?
-			product = ExampleProduct.new(gtin)
+			product = ExampleProduct.new(gtin, get_gln)
 		end
 		xml.instruct! :xml, :version => '1.0', :encoding => 'UTF-8'
 		xml.pd(:productData,
