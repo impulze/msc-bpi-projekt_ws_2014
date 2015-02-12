@@ -870,6 +870,7 @@ class HomeController < ApplicationController
 					update_db(params)
 				elsif params[:add] == 'yes'
 					save_db(params)
+					@products = Product.all
 				elsif params[:del] == 'yes'
 					raise Exception.new("Deleting from database not supported yet.");
 				elsif params[:da_send] == 'yes'
