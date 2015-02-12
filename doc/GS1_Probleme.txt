@@ -1,0 +1,18 @@
+Folgende Probleme traten beim Entwickeln auf, die auf
+fehlende Informationen in GS1-Dokumenten zurückzuführen waren:
+ - Was genau ist eine productionVariantDescription? Geht es hier um die
+   unterschiedlichen Produktsorten wie z.B. Cola, Cola Light?
+ - Was ist der Unterschied zwischen productName und regulatedProductName?
+   Warum muss ein productName mindestens 1 mal vorkommen und ein regulatedProductName
+   nicht?
+ - Was ist eine consumerMarketingDescription? Ist dabei ein Werbeslogan gemeint,
+   wie bei "Bifi hat Biss?" oder eine Produktbeschreibung für Händler?
+ - Was ist brandNameInformation? Wo sind die Unterschiede zu productionVariantDescription,
+   productName und regulatedProductName?
+ - Warum müssen Zutaten im FoodAndBeverageIngredientInformationModule Sequenznummern
+   zugeteilt werden?
+ - Warum dürfen Zutaten nur prozentual in einem Produkt sein?
+   Warum nicht Einheiten? (Milliliter, usw.)
+ - Was sind ingredientStatement und additivesStatement?
+ - Warum dürfen bei dem ProductQuantityInformationModule alle Elemente mehrfach
+   vorkommen?
