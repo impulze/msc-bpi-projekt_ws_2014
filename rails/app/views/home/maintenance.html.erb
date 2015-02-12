@@ -215,7 +215,7 @@
 					<% @edit_bi.product_information_links.each do |pil| %>
 					<% t = pil.product_information_type_code_type[:string] %>
 					<div class="form-group">
-						<label for="infourl_<%= t %>" class="col-sm-3 control-label">Informations-URL (<%= t %>)</label>
+						<label for="infourl_<%= t %>" class="col-sm-3 control-label">Informations-URL (<%= t.gsub(/_/, ' ') %>)</label>
 						<div class="col-sm-9">
 							<input type="url" class="form-control" readonly="readonly" id="infourl_<%= t %>" name="infourl_<%= t %>" value="<%= pil[:url] %>">
 						</div>
@@ -225,7 +225,7 @@
 					<% @edit_bi.image_links.each do |il| %>
 					<% t = il.image_type_code_type[:string] %>
 					<div class="form-group">
-						<label for="bildurl_<%= t %>" class="col-sm-3 control-label">Bild-URL (<%= t %>)</label>
+						<label for="bildurl_<%= t %>" class="col-sm-3 control-label">Bild-URL (<%= t.gsub(/_/, ' ') %>)</label>
 						<div class="col-sm-9">
 							<input type="url" class="form-control" onchange="change_logo();" id="bildurl_<%= t %>" name="bildurl_<%= t %>" value="<%= il[:url] %>">
 						</div>

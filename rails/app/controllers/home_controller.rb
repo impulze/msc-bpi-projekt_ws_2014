@@ -938,7 +938,9 @@ class HomeController < ApplicationController
 								end
 
 								bi.consumer_marketing_descriptions.each do |cmd|
-									xml.consumerMarketingDescription(cmd[:string], 'languageCode' => cmd[:language])
+									if cmd[:string].length != 0
+										xml.consumerMarketingDescription(cmd[:string], 'languageCode' => cmd[:language])
+									end
 								end
 
 								xml.comment! 'see http://www.gs1.org/1/productssolutions/gdsn/gpc/browser/index.html'
